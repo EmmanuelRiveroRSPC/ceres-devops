@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: ceres-rollups-jobs
-  name: ceres-rollups-jobs
+    app: rollupjobs
+  name: rollupjobs
 spec:
   replicas: 1
-  serviceName: ceres-rollups-jobs
+  serviceName: rollupjobs
   selector:
     matchLabels:
-      app: ceres-rollups-jobs
+      app: rollupjobs
   template:
     metadata:
       labels:
-        app: ceres-rollups-jobs
+        app: rollupjobs
         prometheus/scrape-type: actuator
     spec:
       containers:
-        - image: ceres-rollups-jobs
-          name: ceres-rollups-jobs
+        - image: rollupjobs
+          name: rollupjobs
           env:
             - name: JAVA_TOOL_OPTIONS
               value: >
@@ -61,8 +61,8 @@ spec:
             initialDelaySeconds: 10
           volumeMounts:
             - mountPath: /config
-              name: ceres-rollups-jobs-config
+              name: rollupjobs-config
       volumes:
-        - name: ceres-rollups-jobs-config
+        - name: rollupjobs-config
           configMap:
-            name: ceres-rollups-jobs
+            name: rollupjobs

@@ -24,7 +24,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.rackspace.ceres</groupId>
-    <artifactId>rollupjobs</artifactId>
+    <artifactId>ceres</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
