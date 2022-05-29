@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: ceres
-  name: ceres
+    app: ceres-rollups-jobs
+  name: ceres-rollups-jobs
 spec:
-  replicas: 4
-  serviceName: ceres
+  replicas: 1
+  serviceName: ceres-rollups-jobs
   selector:
     matchLabels:
-      app: ceres
+      app: ceres-rollups-jobs
   template:
     metadata:
       labels:
-        app: ceres
+        app: ceres-rollups-jobs
         prometheus/scrape-type: actuator
     spec:
       containers:
-        - image: ceres
-          name: ceres
+        - image: ceres-rollups-jobs
+          name: ceres-rollups-jobs
           env:
             - name: JAVA_TOOL_OPTIONS
               value: >
@@ -35,31 +35,6 @@ spec:
                 -Djava.rmi.server.hostname=0.0.0.0
             - name: SPRING_PROFILES_ACTIVE
               value: "debug"
-            - name: SPRING_CONFIG_ADDITIONALLOCATION
-              value: /config/
-            - name: SPRING_REDIS_HOST
-              value: loadtest-redis-master
-            - name: SPRING_REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: loadtest-redis
-                  key: redis-password
-            - name: SPRING_DATA_CASSANDRA_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: loadtest-superuser
-                  key: username
-            - name: SPRING_DATA_CASSANDRA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: loadtest-superuser
-                  key: password
-            - name: SPRING_DATA_CASSANDRA_LOCALDATACENTER
-              value: dc1
-            - name: SPRING_DATA_CASSANDRA_CONTACTPOINTS
-              value: loadtest-dc1-service
-            - name: SPRING_DATA_CASSANDRA_REQUEST_TIMEOUT
-              value: 10s
           ports:
             - containerPort: 8080
               name: http
@@ -86,8 +61,8 @@ spec:
             initialDelaySeconds: 10
           volumeMounts:
             - mountPath: /config
-              name: ceres-config
+              name: ceres-rollups-jobs-config
       volumes:
-        - name: ceres-config
+        - name: ceres-rollups-jobs-config
           configMap:
-            name: ceres
+            name: ceres-rollups-jobs
