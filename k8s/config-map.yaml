@@ -6,10 +6,13 @@ data:
   application.yml: |-
     jobs:
       granularities:
-        - partitionWidth: 1m
-        - partitionWidth: 5m
-      partitions: 4
-      max-downsample-job-duration: 10s
+        - partitionWidth: 15m
+        - partitionWidth: 30m
+        - partitionWidth: 1h
+        - partitionWidth: 6h
+        - partitionWidth: 12h
+      partitions: 128
+      max-downsample-job-duration: 30s
     logging:
       level:
-        com.rackspace.rollupjobs.app: info
+        com.rackspace.rollupjobs.app: debug
