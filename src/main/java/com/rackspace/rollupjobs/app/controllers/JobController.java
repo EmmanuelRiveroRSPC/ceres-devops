@@ -7,7 +7,6 @@ import com.rackspace.rollupjobs.app.config.JobTimerConfig;
 import com.rackspace.rollupjobs.app.config.Properties;
 import com.rackspace.rollupjobs.app.model.Job;
 import com.rackspace.rollupjobs.app.model.JobStatus;
-import com.rackspace.rollupjobs.app.utils.WebClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +23,14 @@ public class JobController {
     private final JobConfig jobConfig;
     private final JobTimerConfig jobTimers;
     private final Properties properties;
-    private final WebClientUtils webClientUtils;
 
     JobController(
             JobConfig jobConfig,
             JobTimerConfig jobTimers,
-            Properties properties,
-            WebClientUtils webClientUtils) {
+            Properties properties) {
         this.jobConfig = jobConfig;
         this.jobTimers = jobTimers;
         this.properties = properties;
-        this.webClientUtils = webClientUtils;
     }
 
     @GetMapping("/api/job/status")
@@ -48,24 +44,11 @@ public class JobController {
 
     @PostMapping("/api/job")
     public ResponseEntity<String> getJob(@RequestBody Job job) {
-        ResponseEntity<String> result = claimJobInternal(job);
-        this.webClientUtils.replicateClaimJob(job);
-        return result;
-    }
-
-    @PostMapping("/api/job/replicate")
-    public ResponseEntity<String> replicateJob(@RequestBody Job job) {
         return claimJobInternal(job);
     }
 
     @PutMapping("/api/job")
     public ResponseEntity<String> freeJob(@RequestBody Job job) {
-        this.webClientUtils.replicateFreeJob(job);
-        return freeJobInternal(job);
-    }
-
-    @PutMapping("/api/job/replicate")
-    public ResponseEntity<String> freeReplicateJob(@RequestBody Job job) {
         return freeJobInternal(job);
     }
 

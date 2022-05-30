@@ -28,11 +28,6 @@ public class Properties {
      */
     Duration maxDownsampleJobDuration;
 
-    /**
-     * Cluster IP of ourselves to ping the status of our peer
-     */
-    String clusterIp;
-
     @Data
     public static class Granularity {
         /**

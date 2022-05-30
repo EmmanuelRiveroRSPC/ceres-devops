@@ -7,7 +7,6 @@ jobs:
     - partitionWidth: 12h
   partitions: 128
   max-downsample-job-duration: 30s
-  cluster-ip: 10.80.6.120
 server:
   port: 8080
 logging:
