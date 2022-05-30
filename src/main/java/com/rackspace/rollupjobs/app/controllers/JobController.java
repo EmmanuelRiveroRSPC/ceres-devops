@@ -1,14 +1,19 @@
 package com.rackspace.rollupjobs.app.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rackspace.rollupjobs.app.config.JobConfig;
 import com.rackspace.rollupjobs.app.config.JobTimerConfig;
 import com.rackspace.rollupjobs.app.config.Properties;
 import com.rackspace.rollupjobs.app.model.Job;
+import com.rackspace.rollupjobs.app.model.JobStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -18,11 +23,22 @@ public class JobController {
     private final JobConfig jobConfig;
     private final JobTimerConfig jobTimers;
     private final Properties properties;
+    private final ObjectMapper objectMapper;
 
-    JobController(JobConfig jobConfig, JobTimerConfig jobTimers, Properties properties) {
+    JobController(JobConfig jobConfig, JobTimerConfig jobTimers, Properties properties, ObjectMapper objectMapper) {
         this.jobConfig = jobConfig;
         this.jobTimers = jobTimers;
         this.properties = properties;
+        this.objectMapper = objectMapper;
+    }
+
+    @GetMapping("/api/job/status")
+    public ResponseEntity<String> getJobStatus() throws JsonProcessingException, UnknownHostException {
+        JobStatus jobStatus = new JobStatus();
+        jobStatus.setJobList(this.jobConfig.jobList());
+        jobStatus.setHostName(InetAddress.getLocalHost().getHostName());
+        String json = this.objectMapper.writeValueAsString(jobStatus);
+        return ResponseEntity.status(HttpStatus.OK).body(json);
     }
 
     @PostMapping("/api/job")
