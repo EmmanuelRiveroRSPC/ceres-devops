@@ -65,4 +65,4 @@ spec:
       volumes:
         - name: rollupjobs-config
           configMap:
-            name: rollupjobs
+            name: ceres-rollup-jobs

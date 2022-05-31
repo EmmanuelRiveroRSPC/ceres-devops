@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: rollupjobs
+  name: ceres-rollup-jobs
 data:
   application.yml: |-
     jobs:
@@ -13,8 +13,6 @@ data:
         - partitionWidth: 12h
       partitions: 128
       max-downsample-job-duration: 30s
-    server:
-      port: 8080
     logging:
       level:
         root: INFO
