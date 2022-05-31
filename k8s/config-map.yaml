@@ -13,6 +13,8 @@ data:
         - partitionWidth: 12h
       partitions: 128
       max-downsample-job-duration: 30s
+    server:
+      port: 8080
     logging:
       level:
-        com.rackspace.rollupjobs.app: debug
+        root: INFO
