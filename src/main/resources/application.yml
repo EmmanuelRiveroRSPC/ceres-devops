@@ -3,7 +3,7 @@ buffer:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/ceres
+      uri: mongodb://mongo-mongodb/ceres?minPoolSize=100&maxPoolSize=500&maxIdleTimeMS=900000
 server:
   port: 8085
 logging:

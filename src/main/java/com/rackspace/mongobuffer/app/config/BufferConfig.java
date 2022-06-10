@@ -11,18 +11,21 @@ import java.util.Set;
 @Configuration
 public class BufferConfig {
 
+  private final Set<Downsampling> downsamplings;
+  private final Set<Timeslot> timeslots;
+
   public BufferConfig() {
+    this.downsamplings = new HashSet<>();
+    this.timeslots = new HashSet<>();
   }
 
   @Bean
   public Set<Downsampling> downsamplingSet() {
-    Set<Downsampling> downsamplings = new HashSet<>();
     return downsamplings;
   }
 
   @Bean
   public Set<Timeslot> timeslotSet() {
-    Set<Timeslot> timeslots = new HashSet<>();
     return timeslots;
   }
 }
