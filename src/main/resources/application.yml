@@ -1,14 +1,11 @@
-jobs:
-  granularities:
-    - partitionWidth: 15m
-    - partitionWidth: 30m
-    - partitionWidth: 1h
-    - partitionWidth: 6h
-    - partitionWidth: 12h
-  partitions: 128
-  max-downsample-job-duration: 30s
+buffer:
+  max_num: 100
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ceres
 server:
-  port: 8080
+  port: 8085
 logging:
   level:
     root: INFO
