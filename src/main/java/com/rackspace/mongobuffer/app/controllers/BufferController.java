@@ -36,22 +36,18 @@ public class BufferController {
     }
 
     @PostMapping("/api/downsampling")
-    public ResponseEntity<String> bufferDownsampling(@RequestBody Downsampling ds) {
-        log.info("Got downsampling {}", ds);
-        log.info("Got downsamplingSet before: {}", bufferConfig.downsamplingSet());
-        log.info("Got timeslotSet before: {}", bufferConfig.timeslotSet());
+    public synchronized ResponseEntity<String> bufferDownsampling(@RequestBody Downsampling ds) {
+        log.trace("Got downsampling {}", ds);
         bufferConfig.downsamplingSet().add(ds);
         bufferConfig.timeslotSet().add(new Timeslot(ds.getPartition(), ds.getGroup(), ds.getTimeslot()));
-        log.info("Got downsamplingSet after: {}", bufferConfig.downsamplingSet());
-        log.info("Got timeslotSet after: {}", bufferConfig.timeslotSet());
+        log.info("downsamplingSet size: {}", bufferConfig.downsamplingSet().size());
+        log.trace("timeslotSet size: {}", bufferConfig.timeslotSet().size());
 
         if (bufferConfig.downsamplingSet().size() > this.properties.getMaxNum()) {
-            if (this.writeService.writeDownsamplings().wasAcknowledged()) {
-                this.bufferConfig.downsamplingSet().clear();
-                if (this.writeService.writeTimeslots().wasAcknowledged()) {
-                    this.bufferConfig.timeslotSet().clear();
-                }
-            }
+            this.writeService.writeDownsamplings();
+            this.writeService.writeTimeslots();
+            this.bufferConfig.downsamplingSet().clear();
+            this.bufferConfig.timeslotSet().clear();
         }
         return ResponseEntity.status(HttpStatus.OK).body(
             String.format("{ \"num_not_flushed:\": %d }", this.bufferConfig.downsamplingSet().size()));
