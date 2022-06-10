@@ -1,5 +1,5 @@
 buffer:
-  max_num: 100
+  max_num: 1000
 spring:
   data:
     mongodb:

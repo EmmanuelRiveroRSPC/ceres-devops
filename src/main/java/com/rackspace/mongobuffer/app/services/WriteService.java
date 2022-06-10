@@ -38,20 +38,17 @@ import java.util.List;
 @Slf4j
 public class WriteService {
 
-  private final Properties properties;
   private final BufferConfig bufferConfig;
   private final MongoClient mongoClient;
 
 
   @Autowired
-  public WriteService(Properties properties,
-                      BufferConfig bufferConfig, MongoClient mongoClient) {
-    this.properties = properties;
+  public WriteService(BufferConfig bufferConfig, MongoClient mongoClient) {
     this.bufferConfig = bufferConfig;
     this.mongoClient = mongoClient;
   }
 
-  public BulkWriteResult write() {
+  public BulkWriteResult writeDownsamplings() {
     MongoDatabase database = this.mongoClient.getDatabase("ceres");
     MongoCollection<Document> collection = database.getCollection("downsampling");
     List<WriteModel<Document>> writeOperations = new ArrayList<>();
@@ -73,7 +70,34 @@ public class WriteService {
         }
     );
     BulkWriteResult bulkWriteResult = collection.bulkWrite(writeOperations);
-    System.out.println("bulkWriteResult:- " + bulkWriteResult);
+    log.info("downsampling bulk write result: {}", bulkWriteResult);
     return bulkWriteResult;
   }
+
+  public BulkWriteResult writeTimeslots() {
+    MongoDatabase database = this.mongoClient.getDatabase("ceres");
+    MongoCollection<Document> collection = database.getCollection("timeslot");
+    List<WriteModel<Document>> writeOperations = new ArrayList<>();
+
+    this.bufferConfig.timeslotSet().forEach(d -> {
+          List<Bson> filters = new ArrayList<>();
+          filters.add(Filters.eq("partition", d.getPartition()));
+          filters.add(Filters.eq("group", d.getGroup()));
+          filters.add(Filters.eq("timeslot", d.getTimeslot()));
+          Bson andComparison = Filters.and(filters);
+
+          writeOperations.add(new DeleteOneModel<>(andComparison));
+          writeOperations.add(new InsertOneModel<>(
+              new Document("partition", d.getPartition())
+                  .append("group", d.getGroup())
+                  .append("timeslot", d.getTimeslot())));
+        }
+    );
+    BulkWriteResult bulkWriteResult = collection.bulkWrite(writeOperations);
+    log.info("timeslot bulk write result: {}", bulkWriteResult);
+    return bulkWriteResult;
+  }
+
+
+
 }
