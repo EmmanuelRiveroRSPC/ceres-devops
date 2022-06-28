@@ -70,6 +70,7 @@ jobs:
         repository: rax-maas/helm-ceres
         ref: master
         path: helm-ceres
+        token: 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
 
     - uses: azure/setup-helm@v3
       with:
