@@ -83,7 +83,7 @@ jobs:
     - name: Getting latest digest
       shell: bash
       run: | 
-        DIGEST=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/{{ env.IMAGE_NAME }} --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
+        DIGEST=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/ceres --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
         echo "DIGEST=$(echo $DIGEST)" >> $GITHUB_ENV
 
     - name: test digest
