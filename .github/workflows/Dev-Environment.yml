@@ -1,5 +1,8 @@
 name: Dev-Environment
 
+env:
+  IMAGE_NAME: ceres
+
 on: 
   pull_request:
     types: [ closed ]
@@ -80,17 +83,8 @@ jobs:
     - name: Getting latest digest
       shell: bash
       run: | 
-        DIGEST=$(gcloud container images list-tags gcr.io/ceres-dev-222017/testdevops --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
+        DIGEST=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/{{ env.IMAGE_NAME }} --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
         echo "DIGEST=$(echo $DIGEST)" >> $GITHUB_ENV
-
-    - name: test
-      run: ls helm-ceres
-
-    - name: helm test
-      run: helm show values helm-ceres/charts/ceres
-
-    - name: helm test
-      run: helm list
 
     - name: test digest
       run: echo ${{ env.DIGEST }} 
