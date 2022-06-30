@@ -83,3 +83,6 @@ jobs:
     - name: helm test
       run: helm show values helm-ceres/charts/ceres
 
+    - name: helm test
+      run: helm list
+
