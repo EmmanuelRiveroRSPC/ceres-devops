@@ -77,6 +77,12 @@ jobs:
         version: 3.9.0
       id: install
 
+    - name: Getting latest digest
+      shell: bash
+      run: | 
+        DIGEST=$(gcloud container images list-tags gcr.io/ceres-dev-222017/testdevops --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
+        echo "DIGEST=$(echo $DIGEST)" >> $GITHUB_ENV
+
     - name: test
       run: ls helm-ceres
 
@@ -86,3 +92,5 @@ jobs:
     - name: helm test
       run: helm list
 
+    - name: test digest
+      run: echo ${{ env.DIGEST }} 
