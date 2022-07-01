@@ -35,7 +35,7 @@ jobs:
         uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            pomVersion = {{ env.POM_VERSION }}.split(".")
+            pomVersion = ${{ env.POM_VERSION }}.split(".")
 
             major = pomVersion[0]
             minor = pomVersion[1]
