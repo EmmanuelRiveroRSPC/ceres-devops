@@ -72,10 +72,11 @@ jobs:
           script: |
             latestTag = "${{ env.LATEST_TAG }}"
             newVersion = ""
+
             if not latestTag:
               print("Found no builds for this version")
               print("generating new build")
-              NewVersion = "${{ env.MAJOR_VERSION}}.0"
+              NewVersion = "${{ env.MAJOR_VERSION }}.0"
 
             else:
               print("found version: ${{ env.LATEST_TAG }}")
@@ -84,7 +85,7 @@ jobs:
 
               build = int(version[2]) + 1
               newVersion = f"{version[0]}.{version[1]}.{str(build)}"
-
+            print(newVersion)
             set_env("NEW_VERSION", newVersion)
 
       - run: echo ${{ env.NEW_VERSION }}
