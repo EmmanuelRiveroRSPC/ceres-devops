@@ -46,7 +46,7 @@ jobs:
 
             version = major + '.' + minor + '.' + build
 
-            set_env(NEW_VERSION, version)
+            set_env("NEW_VERSION", version)
 
       - name: test
         run: echo {{ env.NEW_VERSION }}  
