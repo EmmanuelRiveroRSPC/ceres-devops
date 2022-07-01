@@ -64,7 +64,7 @@ jobs:
 
       - shell: bash
         run: | 
-          LATEST_TAG=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops --limit=1 --sort-by=~TIMESTAMP --filter="TAGS=${{ env.MAJOR_VERSION }} --format='table[no-heading](tags)')
+          LATEST_TAG=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops --limit=1 --sort-by=~TIMESTAMP --filter="TAGS=${{ env.MAJOR_VERSION }}" --format='table[no-heading](tags)')
           echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
 
       - uses: jannekem/run-python-script-action@v1
