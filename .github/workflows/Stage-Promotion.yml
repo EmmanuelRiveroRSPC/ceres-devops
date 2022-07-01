@@ -76,7 +76,7 @@ jobs:
             if not latestTag:
               print("Found no builds for this version")
               print("generating new build")
-              newVersion = "${{ env.MAJOR_VERSION }}.0"
+              newVersion = "${{ env.MAJOR_VERSION }}.1"
 
             else:
               print("found version: ${{ env.LATEST_TAG }}")
@@ -88,6 +88,5 @@ jobs:
             print(newVersion)
             set_env("NEW_VERSION", newVersion)
 
-      - run: echo ${{ env.NEW_VERSION }}
-#      - name: Retag
-#        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:$POM_VERSION
+      - name: Retag
+        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${NEW_VERSION}
