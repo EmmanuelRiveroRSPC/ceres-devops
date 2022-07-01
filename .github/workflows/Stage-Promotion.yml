@@ -73,9 +73,19 @@ jobs:
             latestTag = "${{ env.LATEST_TAG }}"
 
             if not latestTag:
-              print(empty var)
-            else:
-              print(not empty var)  
+              print("Found no builds for this version")
 
+              NewVersion = "${{ env.MAJOR_VERSION}}.0"
+
+            else:
+              print(found version: ${{ env.LATEST_TAG }})
+
+              version = latestTag.split(.)
+
+              newVersion = f"{version[0]}.{version[1].{int(version[2]) +1 }}"
+
+            set_env("NEW_VERSION", newVersion)
+
+      - run: echo ${{ env.NEW_VERSION }}
 #      - name: Retag
 #        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:$POM_VERSION
