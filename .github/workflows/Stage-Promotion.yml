@@ -83,7 +83,7 @@ jobs:
               version = latestTag.split(".")
 
               build = int(version[2]) + 1
-              newVersion = f"{{version[0]}.{version[1]}.{str(build)}}"
+              newVersion = f"{version[0]}.{version[1]}.{str(build)}"
 
             set_env("NEW_VERSION", newVersion)
 
