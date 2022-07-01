@@ -76,7 +76,7 @@ jobs:
             if not latestTag:
               print("Found no builds for this version")
               print("generating new build")
-              NewVersion = "${{ env.MAJOR_VERSION }}.0"
+              newVersion = "${{ env.MAJOR_VERSION }}.0"
 
             else:
               print("found version: ${{ env.LATEST_TAG }}")
