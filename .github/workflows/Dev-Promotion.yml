@@ -1,7 +1,8 @@
-name: Dev-Environment
+name: Dev-Promotion
 
 env:
   IMAGE_NAME: ceres
+  HELM_CHART: ceres
 
 on: 
   pull_request:
@@ -39,14 +40,23 @@ jobs:
         java-version: '14'
         distribution: 'adopt-hotspot'
 
+#    - name: Build with Maven
+#      run: mvn -B deploy -s .mvn/settings.xml
+
     - name: Build with Maven
       run: mvn -B verify -s .mvn/settings.xml
+
+#    - name: Image build
+#      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest .
 
     - name: Image build
       run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest .
 
     - name: Docker login
       run: gcloud auth configure-docker gcr.io -q
+
+#    - name: Image push
+#      run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest
 
     - name: Image push
       run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest
@@ -88,3 +98,6 @@ jobs:
 
     - name: test digest
       run: echo ${{ env.DIGEST }} 
+    
+#    - name: Helm upgrade
+#      run: helm upgrade helm-ceres $HELM_CHART --set image.repository=${IMAGE_NAME}@sha256,image.tag=${{ env.DIGEST }}

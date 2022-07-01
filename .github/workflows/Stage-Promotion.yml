@@ -1,0 +1,52 @@
+name: Stage-promotion
+
+# Only trigger, when the build workflow succeeded
+on:
+  workflow_run:
+    workflows: ["Dev-Promotion"]
+    types:
+      - completed
+  workflow_dispatch:
+  
+jobs:
+  Image-promotion:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_DEV }}'
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+
+      - name: Getting version
+        shell: bash
+        run: |
+          POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "POM_VERSION=$POM_VERSION" >> $GITHUB_ENV
+
+      - name: tag Promotion
+      - uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            pomVersion = {{ env.POM_VERSION }}.split(".")
+
+            major = pomVersion[0]
+            minor = pomVersion[1]
+            build = pomVersion[2]
+
+            version = major + '.' + minor + '.' + build
+
+            set_env(NEW_VERSION, version)
+
+      - name: test
+        run: echo {{ env.NEW_VERSION }}  
+
+#      - name: Retag
+#        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:$POM_VERSION
