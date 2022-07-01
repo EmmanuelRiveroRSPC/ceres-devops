@@ -45,8 +45,9 @@ jobs:
             build = pomVersion[2]
 
             if major == 0:
-              print("Non release version found, canceling promotion")
-              exit 1
+              print(f"{version}:")
+              print("Not a release version, canceling promotion")
+              exit(1)
 
             version = major + '.' + minor + '.' + build
 
