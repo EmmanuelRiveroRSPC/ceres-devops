@@ -82,11 +82,11 @@ jobs:
               print("found version: ${{ env.LATEST_TAG }}")
 
               version = latestTag.split(".")
-
+              print(version[2])
               build = int(version[2]) + 1
               newVersion = f"{version[0]}.{version[1]}.{str(build)}"
             print(newVersion)
             set_env("NEW_VERSION", newVersion)
 
-      - name: Retag
-        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${NEW_VERSION}
+#      - name: Retag
+#        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${NEW_VERSION}
