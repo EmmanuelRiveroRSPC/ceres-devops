@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
+      
       - uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{ secrets.GCP_DEV }}'
@@ -29,7 +31,8 @@ jobs:
         shell: bash
         run: |
           POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "POM_VERSION=$POM_VERSION" >> $GITHUB_ENV
+          echo ${POM_VERSION}
+          echo "POM_VERSION=${POM_VERSION}" >> $GITHUB_ENV
 
       - name: tag Promotion
         uses: jannekem/run-python-script-action@v1
