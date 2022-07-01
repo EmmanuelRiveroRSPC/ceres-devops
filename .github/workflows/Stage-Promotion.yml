@@ -44,6 +44,10 @@ jobs:
             minor = pomVersion[1]
             build = pomVersion[2]
 
+            if major == 0:
+              print("Non release version found, canceling promotion")
+              exit 1
+
             version = major + '.' + minor + '.' + build
 
             set_env("NEW_VERSION", version)
