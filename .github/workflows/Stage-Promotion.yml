@@ -7,7 +7,7 @@ on:
     types:
       - completed
   workflow_dispatch:
-  
+
 jobs:
   Image-promotion:
     runs-on: ubuntu-latest
@@ -31,19 +31,7 @@ jobs:
           POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "POM_VERSION=$POM_VERSION" >> $GITHUB_ENV
 
-      - name: tag Promotion
-      - uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            pomVersion = {{ env.POM_VERSION }}.split(".")
 
-            major = pomVersion[0]
-            minor = pomVersion[1]
-            build = pomVersion[2]
-
-            version = major + '.' + minor + '.' + build
-
-            set_env(NEW_VERSION, version)
 
       - name: test
         run: echo {{ env.NEW_VERSION }}  
