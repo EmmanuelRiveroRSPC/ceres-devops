@@ -70,7 +70,7 @@ jobs:
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            latestTag = ${{ env.LATEST_TAG }}
+            latestTag = "${{ env.LATEST_TAG }}""
 
             if not latestTag:
               print(empty var)
