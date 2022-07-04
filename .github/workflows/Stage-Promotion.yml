@@ -87,13 +87,13 @@ jobs:
 
               else:
                 if len(tagList[0].split(",")) == 3:
-                  print(f"found version: {tag[0]}")
+                  print(f"found version: {tagList[0]}")
                   versions = tagList[0].split(".")
                   build = build = int(versions[2]) + 1
                   newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
 
                 else:
-                  print(f"found version: {tag[1]}")
+                  print(f"found version: {tagList[1]}")
                   versions = tagList[1].split(".")
                   build = build = int(versions[2]) + 1
                   newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
