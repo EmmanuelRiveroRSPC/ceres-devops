@@ -87,6 +87,10 @@ jobs:
 
               else:
                 print (tagList[0].split(","))
+                print (len(tagList[0].split(",")))
+                print (len(tagList[0].split(",")) == 3)
+                
+
                 if len(tagList[0].split(",")) == 3:
                   print(f"found version: {tagList[0]}")
                   versions = tagList[0].split(".")
