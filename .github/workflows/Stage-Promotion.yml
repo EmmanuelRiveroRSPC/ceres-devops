@@ -99,8 +99,8 @@ jobs:
               #     build = int(versions[2]) + 1
               #     newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
 
-              print("Latest version: ${{ env.LATEST_TAG }}")
-              versions = ${{ env.LATEST_TAG }}.split(".")
+              print(f"Latest version: {latestTag}")
+              versions = latestTag.split(".")
               build = build = int(versions[2]) + 1
               newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
 
