@@ -79,30 +79,35 @@ jobs:
               newVersion = "${{ env.MAJOR_VERSION }}.1"
 
             else:
-              tagList = latestTag.split(",")
+              # tagList = latestTag.split(",")
 
-              if len(tagList) > 2:
-                print ("More that one tag found in the latest image")
-                exit(1)
+              # if len(tagList) > 2:
+              #   print ("More that one tag found in the latest image")
+              #   exit(1)
 
-              else:       
+              # else:        
 
-                if len(tagList[0].split(".")) == 3:
-                  print(f"found version: {tagList[0]}")
-                  versions = tagList[0].split(".")
-                  build = build = int(versions[2]) + 1
-                  newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
+              #   if len(tagList[0].split(".")) == 3:
+              #     print(f"Latest version: {tagList[0]}")
+              #     versions = tagList[0].split(".")
+              #     build = int(versions[2]) + 1
+              #     newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
 
-                else:
-                  print(f"found version: {tagList[1]}")
-                  versions = tagList[1].split(".")
-                  build = build = int(versions[2]) + 1
-                  newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
+              #   else:
+              #     print(f"Latest version: {tagList[1]}")
+              #     versions = tagList[1].split(".")
+              #     build = int(versions[2]) + 1
+              #     newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
 
-              
+            print("Latest version: ${{ env.LATEST_TAG }}")
+            versions = ${{ env.LATEST_TAG }}.split(".")
+            build = build = int(versions[2]) + 1
+            newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
 
-            print(newVersion)
+            print(f"new version: {newVersion}")
             set_env("NEW_VERSION", newVersion)
 
-#      - name: Retag
-#        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${NEW_VERSION}
+
+
+      - name: Retag
+        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${NEW_VERSION}
