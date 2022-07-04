@@ -72,13 +72,13 @@ jobs:
           script: |
             latestTag = "${{ env.LATEST_TAG }}"
             newVersion = ""
+            
+            print (latestTag.split(","))
 
             if not latestTag:
               print("Found no builds for this version")
               print("generating new build")
               newVersion = "${{ env.MAJOR_VERSION }}.1"
-
-            print (latestTag.split(","))
 
             else:
               if len(latestTag.split(",")) > 1:
