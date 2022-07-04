@@ -80,7 +80,7 @@ jobs:
 
             else:
               if len(latestTag.split(",")) > 1:
-                print ("More that one tag found in the latest image")
+                print ('\033[1m' + "More that one tag found in the latest image")
                 exit(1)
 
               print(f"Latest version: {latestTag}")
