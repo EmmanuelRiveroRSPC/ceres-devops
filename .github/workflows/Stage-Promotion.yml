@@ -78,26 +78,12 @@ jobs:
               print("generating new build")
               newVersion = "${{ env.MAJOR_VERSION }}.1"
 
+            print (latestTag.split(","))
+
             else:
-              # tagList = latestTag.split(",")
-
-              # if len(tagList) > 2:
-              #   print ("More that one tag found in the latest image")
-              #   exit(1)
-
-              # else:        
-
-              #   if len(tagList[0].split(".")) == 3:
-              #     print(f"Latest version: {tagList[0]}")
-              #     versions = tagList[0].split(".")
-              #     build = int(versions[2]) + 1
-              #     newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
-
-              #   else:
-              #     print(f"Latest version: {tagList[1]}")
-              #     versions = tagList[1].split(".")
-              #     build = int(versions[2]) + 1
-              #     newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
+              if len(latestTag.split(",")) > 1:
+                print ("More that one tag found in the latest image")
+                exit(1)
 
               print(f"Latest version: {latestTag}")
               versions = latestTag.split(".")
