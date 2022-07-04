@@ -72,8 +72,6 @@ jobs:
           script: |
             latestTag = "${{ env.LATEST_TAG }}"
             newVersion = ""
-            
-            print (latestTag.split(","))
 
             if not latestTag:
               print("Found no builds for this version")
