@@ -85,13 +85,9 @@ jobs:
                 print ("More that one tag found in the latest image")
                 exit(1)
 
-              else:
-                print (tagList[0].split(","))
-                print (len(tagList[0].split(",")))
-                print (len(tagList[0].split(",")) == 3)
-                
+              else:       
 
-                if len(tagList[0].split(",")) == 3:
+                if len(tagList[0].split(".")) == 3:
                   print(f"found version: {tagList[0]}")
                   versions = tagList[0].split(".")
                   build = build = int(versions[2]) + 1
