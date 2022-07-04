@@ -91,13 +91,13 @@ jobs:
                 if len(tag) != 3:
                   print("found version: ${{ env.tagList[1] }}")
                   versions = tagList[1].split(".")
-                  build = build = int(version[2]) + 1
-                  newVersion = newVersion = f"{version[0]}.{version[1]}.{str(build)}"
+                  build = build = int(versions[2]) + 1
+                  newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
                 else:
                   print("found version: ${{ env.tag[1] }}")
                   versions = tag.split(".")
-                  build = build = int(version[2]) + 1
-                  newVersion = newVersion = f"{version[0]}.{version[1]}.{str(build)}"
+                  build = build = int(versions[2]) + 1
+                  newVersion = newVersion = f"{versions[0]}.{versions[1]}.{str(build)}"
 
               
 
