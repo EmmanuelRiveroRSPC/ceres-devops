@@ -20,7 +20,7 @@ jobs:
     runs-on:  ubuntu-latest
     
     steps:
-      - uses: EmmanuelRiveroRSPC/ceres-devops/getLastVersion@master
+      - uses: EmmanuelRiveroRSPC/ceres-devops/.github/workflows/getLastVersion@master
         id: version
         with:
           image: testdevops
