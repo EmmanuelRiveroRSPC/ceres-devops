@@ -1,8 +1,6 @@
 ---
 name: Dev-Smoke-test
 
-
-
 on:
   workflow_run:
     workflows: ["Dev-Promotion"]

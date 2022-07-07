@@ -1,4 +1,6 @@
 ---
+name: Get Last version
+
 on:
   workflow_call:
     inputs:

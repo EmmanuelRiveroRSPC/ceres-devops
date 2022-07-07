@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 jobs:
   Setup:
-    uses: "./.github/workflows/getLastVersion.yml"
+    uses: ./.github/workflows/getLastVersion.yml
     with:
       image: testdevops
       account:  ${{ secrets.GCP_DEV_ACC }}
