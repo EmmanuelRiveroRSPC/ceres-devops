@@ -11,7 +11,8 @@ on:
     branches: 
       - master
     paths-ignore:
-      - [ '.github/workflows/**', 'test-script' ] 
+      - '.github/workflows/**'
+      - 'test-script' 
 
 jobs:
   Build:
