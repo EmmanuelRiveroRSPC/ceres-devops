@@ -69,5 +69,5 @@ jobs:
       - id: version
         shell: bash
         run: | 
-          gcloud container images list-tags gcr.io/${{ secrets.account }}/{{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)'
+          gcloud container images list-tags gcr.io/${{ secrets.account }}/${{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)'
 
