@@ -7,7 +7,7 @@ on:
 env:
   image: testdevops
   account: ${{ secrets.GCP_DEV_ACC }}
-  creds: ${{ secrets.GCP_DEV }}
+  GCPCreds: ${{ secrets.GCP_DEV }}
 
 jobs:
   Setup:
@@ -24,5 +24,3 @@ jobs:
     
     steps:
       - run: echo ${{ steps.Setup.outputs.version }}
-      - run: echo ${{ secrets.GCP_DEV }} > /tmp/test2
-      - run: cat /tmp/test2
