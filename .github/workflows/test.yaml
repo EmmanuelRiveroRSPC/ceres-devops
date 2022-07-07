@@ -5,25 +5,28 @@ on:
   workflow_dispatch:
 
 env:
+  image: testdevops
   account: ${{ secrets.GCP_DEV_ACC }}
   creds: ${{ secrets.GCP_DEV }}
 
 jobs:
-  # Setup:
-  #   uses: ./.github/workflows/getLastVersion.yml
-  #   with:
-  #     image: testdevops
-  #     account:  ${{ env.account }}
-  #     GCPCreds: ${{ env.creds }}
+  Setup:
+    uses: ./.github/workflows/getLastVersion.yml
+    with:
+      image: $image
+    secrets:
+      account:  ${{ secrets.GCP_DEV_ACC }}
+      GCPCreds: ${{ secrets.GCP_DEV_ACC }} 
+      
 
   testit:
     runs-on:  ubuntu-latest
     
     steps:
-      - uses: EmmanuelRiveroRSPC/ceres-devops/.github/workflows/getLastVersion.yml@master
+      - uses: ./.github/workflows/getLastVersion.yml
         id: version
         with:
           image: testdevops
           account:  ${{ env.account }}
           GCPCreds: ${{ env.creds }}
-      - run: echo ${{ steps.version.outputs.version }}
+      - run: echo ${{ steps.Setup.outputs.version }}

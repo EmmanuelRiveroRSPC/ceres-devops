@@ -7,12 +7,12 @@ on:
       image:
         required: true
         type: string
+
+    secrets:
       account:
         required: true
-        type: string      
       GCPCreds:
         required: true
-        type: string
     outputs:
       version:
         description: "Last image version"
@@ -32,7 +32,7 @@ jobs:
 
       - uses: 'google-github-actions/auth@v0'
         with:
-          credentials_json: '${{ inputs.GCPCreds }}'
+          credentials_json: '${{ secrets.GCPCreds }}'
 
       - uses: jannekem/run-python-script-action@v1
         with:
@@ -58,5 +58,5 @@ jobs:
       - id: version
         shell: bash
         run: | 
-          gcloud container images list-tags gcr.io/${{ inputs.account }}/{{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)'
+          gcloud container images list-tags gcr.io/${{ secrets.account }}/{{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)'
 
