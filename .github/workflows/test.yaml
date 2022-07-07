@@ -1,5 +1,5 @@
 ---
-name: Stage-promotion
+name: testing
 
 on:
   workflow_dispatch:
