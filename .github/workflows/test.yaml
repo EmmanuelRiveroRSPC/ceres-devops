@@ -16,7 +16,7 @@ jobs:
       image: testdevops
     secrets:
       account:  ${{ secrets.GCP_DEV_ACC }}
-      GCPCreds: ${{ secrets.GCP_DEV_ACC }} 
+      GCPCreds: ${{ secrets.GCP_DEV }} 
       
 
   testit:
