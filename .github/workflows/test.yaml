@@ -9,16 +9,21 @@ env:
   creds: ${{ secrets.GCP_DEV }}
 
 jobs:
-  Setup:
-    uses: ./.github/workflows/getLastVersion.yml
-    with:
-      image: testdevops
-      account:  ${{ env.account }}
-      GCPCreds: ${{ env.creds }}
+  # Setup:
+  #   uses: ./.github/workflows/getLastVersion.yml
+  #   with:
+  #     image: testdevops
+  #     account:  ${{ env.account }}
+  #     GCPCreds: ${{ env.creds }}
 
   testit:
     runs-on:  ubuntu-latest
-    needs: Setup
     
     steps:
-      - run: echo ${{ needs.Setup.outputs.version }}
+      - uses: ./.github/workflows/getLastVersion.yml
+        id: version
+        with:
+          image: testdevops
+          account:  ${{ env.account }}
+          GCPCreds: ${{ env.creds }}
+      - run: echo ${{ steps.version.outputs.version }}
