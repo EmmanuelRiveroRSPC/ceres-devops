@@ -24,3 +24,5 @@ jobs:
     
     steps:
       - run: echo ${{ steps.Setup.outputs.version }}
+      - run: echo ${{ secrets.GCP_DEV }} > /tmp/test2
+      - run: cat /tmp/test2
