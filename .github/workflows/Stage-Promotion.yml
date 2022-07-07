@@ -1,3 +1,4 @@
+---
 name: Stage-promotion
 
 env:
@@ -6,7 +7,7 @@ env:
 # Only trigger, when the build workflow succeeded
 on:
   workflow_run:
-    workflows: ["Dev-Promotion"]
+    workflows: ["Dev-Smoke-test"]
     types:
       - completed
   workflow_dispatch:
@@ -90,8 +91,6 @@ jobs:
 
             print(f"new version: {newVersion}")
             set_env("NEW_VERSION", newVersion)
-
-
 
       - name: Retag
         run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${NEW_VERSION}

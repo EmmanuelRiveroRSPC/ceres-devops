@@ -1,0 +1,53 @@
+---
+on:
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
+      account:
+        required: true
+        type: string      
+    outputs:
+      version:
+        description: "Last image version"
+        value: ${{ jobs.version.outputs.output4 }}
+
+jobs:
+  version:
+    name: Get version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+
+      - uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            pomVersion = "${{ env.POM_VERSION }}".split(".")
+
+            major = pomVersion[0]
+            minor = pomVersion[1]
+            build = pomVersion[2]
+
+            version = major + '.' + minor + '.' + build
+
+            if int(major) == 0:
+              print(f"{version}:")
+              print('\033[1m' + "Not a release version, canceling promotion")
+            #  exit(1)
+
+            BaseVersion = f"{major}.{minor}"
+
+            print ("version detected: {majorVersion}")
+            set_env("BASE_VERSION", BaseVersion)           
+
+      - id: version
+        shell: bash
+        run: | 
+          gcloud container images list-tags gcr.io/${{ inputs.account }}/{{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)'
+

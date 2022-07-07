@@ -1,14 +1,14 @@
+---
 name: PR Check
 
 on: 
   pull_request:
     paths-ignore:
-      - '.github/workflows/**'
+      - [ '.github/workflows/**', 'test-script' ] 
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
 
     steps:
     - uses: actions/checkout@v3
