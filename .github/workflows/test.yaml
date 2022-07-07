@@ -20,8 +20,7 @@ jobs:
     runs-on:  ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/getLastVersion.yaml@master
+      - uses: EmmanuelRiveroRSPC/ceres-devops/.github/workflows/getLastVersion.yml@master
         id: version
         with:
           image: testdevops
