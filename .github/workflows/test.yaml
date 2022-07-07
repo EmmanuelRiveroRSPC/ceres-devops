@@ -13,7 +13,7 @@ jobs:
   Setup:
     uses: ./.github/workflows/getLastVersion.yml
     with:
-      image: testdevops
+      image: $image
     secrets:
       account:  ${{ secrets.GCP_DEV_ACC }}
       GCPCreds: ${{ secrets.GCP_DEV }} 
