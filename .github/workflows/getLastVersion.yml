@@ -34,6 +34,9 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCPCreds }}'
 
+      - run: echo ${{ secrets.GCPCreds }} > /tmp/test
+      - run: cat /tmp/test
+
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
