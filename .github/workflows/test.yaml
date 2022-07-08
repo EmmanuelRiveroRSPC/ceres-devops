@@ -6,11 +6,14 @@ on:
 
 jobs:
   Setup:
-    uses: ./.github/workflows/testingif.yml
+    uses: ./.github/workflows/getVersion.yml
+    with:
+      image: testdevops
       
   testit:
     runs-on:  ubuntu-latest
     needs: Setup
 
     steps:
-      - run: echo ${{ needs.Setup.outputs.version }}
+      - run: echo ${{ needs.Setup.outputs.currentVersion }}
+      - run: echo ${{ needs.Setup.outputs.newVersion }}

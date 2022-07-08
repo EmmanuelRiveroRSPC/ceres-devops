@@ -14,17 +14,15 @@ on:
       - '.github/workflows/**'
       - 'test-script' 
 
-
-
 jobs:
   Setup:
-    uses: ./.github/workflows/getLastVersion.yml
+    uses: ./.github/workflows/getVersion.yml
     with:
       image: testdevops
+      newVersion: true
     secrets:
       account:  ${{ secrets.GCP_DEV_ACC }}
       GCPCreds: ${{ secrets.GCP_DEV }} 
-
 
   Build:
     needs: Setup
@@ -54,32 +52,12 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt-hotspot'
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-
-      ### Resolving version
-      - uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            version = "${{ Setup.outputs.version }}".strip(",latest")
-
-            if len(version.split(",")) > 2:
-              print("Two tags are set on the same image aborting...")
-              exit(1)
-            
-            print ("version detected: {version}")
-            set_env("VERSION", compile-version)      
           
-          
-
   #    - name: Build with Maven
   #      run: mvn -B deploy -s .mvn/settings.xml
 
       - name: Build with Maven
-        run: mvn -B verify -s .mvn/settings.xml versions:set -DnewVersion=${{ env.version }}-SNAPSHOT
+        run: mvn -B verify -s .mvn/settings.xml versions:set -DnewVersion=${{ needs.Setup.outputs.version }}-SNAPSHOT
 
   #    - name: Image build
   #      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest .
