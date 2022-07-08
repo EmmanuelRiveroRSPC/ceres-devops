@@ -19,10 +19,10 @@ jobs:
       version: ${{ steps.version.outputs.gcloud_version }}
   
     steps:
-      - if: ${{ inputs.testout }} == false
+      - if: ${{ inputs.testout }} == 'false'
         run: echo run1
       
-      - if: ${{ inputs.testout }} == true
+      - if: ${{ inputs.testout }} == 'true'
         run: echo run2
 
       - run: echo run3
