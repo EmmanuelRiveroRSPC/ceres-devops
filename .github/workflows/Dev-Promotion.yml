@@ -54,27 +54,33 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt-hotspot'
+
+      - name: Set artifact name
+        shell: bash
+        run: |
+          echo "ARTIFACT_NAME=${{ needs.Setup.outputs.new_version }}-SNAPSHOT" >> $GITHUB_ENV 
+
       ### Maven build
   #    - name: Build with Maven
   #      shell: bash
   #      run: |
-  #        mvn build-helper:parse-version versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT versions:commit
+  #        mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_NAME }} versions:commit
   #        mvn -B deploy -s .mvn/settings.xml
 
       - name: Build with Maven
         shell: bash
         run: |
-          mvn build-helper:parse-version versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT versions:commit
+          mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_NAME }} versions:commit
           mvn -B verify -s .mvn/settings.xml
       
       - run: ls ./target
 
   #    - name: Image build
-  #      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest --build-arg ARTIFACT_VERSION=${{ needs.Setup.outputs.new_version }} .
+  #      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest --build-arg ARTIFACT_VERSION=${{ env.ARTIFACT_NAME }} .
 
       ### Image build and push
       - name: Image build
-        run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest --build-arg ARTIFACT_VERSION=${{ needs.Setup.outputs.new_version }} .
+        run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest --build-arg ARTIFACT_VERSION=${{ env.ARTIFACT_NAME }} .
 
   #    - name: Image push
   #      run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest
