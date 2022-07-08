@@ -6,7 +6,7 @@ on:
 
 jobs:
   Setup:
-    uses: ./.github/workflows/getLastVersion.yml
+    uses: ./.github/workflows/getNewVersion.yml
     with:
       image: testdevops
     secrets:

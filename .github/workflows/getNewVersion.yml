@@ -19,60 +19,17 @@ on:
         value: ${{ jobs.version.outputs.version }}
 
 jobs:
-  version:
-    name: Get version
-    runs-on: ubuntu-latest
-
-    outputs:
-      version: ${{ steps.version.outputs.gcloud_version }}
+  Setup:
+    uses: ./.github/workflows/getLastVersion.yml
+    with:
+      image: ${{ inputs.image }}
+    secrets:
+      account:  ${{ secrets.GCP_DEV_ACC }}
+      GCPCreds: ${{ secrets.GCP_DEV }} 
+  
+  testit:
+    runs-on:  ubuntu-latest
+    needs: Setup
 
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-
-      - uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: '${{ secrets.GCPCreds }}'
-
-      - run: |
-          POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "POM_VERSION=${POM_VERSION}" >> $GITHUB_ENV
-
-      - uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            import xml.etree.ElementTree as ET
-
-            tree = ET.parse('pom.xml')
-            root = tree.getroot()
-
-
-
-            pomVersion = "${{ env.POM_VERSION }}".split(".")
-
-            major = pomVersion[0]
-            minor = pomVersion[1]
-            build = pomVersion[2]
-
-            version = major + '.' + minor + '.' + build
-
-            if int(major) == 0:
-              print(f"{version}:")
-              print('\033[1m' + "Not a release version, canceling promotion")
-            #  exit(1)
-
-            BaseVersion = f"{major}.{minor}"
-
-            print ("version detected: {majorVersion}")
-            set_env("BASE_VERSION", BaseVersion)           
-
-      - id: version
-        shell: bash
-        run: | 
-          VERSION=$(gcloud container images list-tags gcr.io/${{ secrets.account }}/${{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)')
-          echo "::set-output name=gcloud_version::${VERSION}"
-
+      - run: echo ${{ needs.Setup.outputs.version }}

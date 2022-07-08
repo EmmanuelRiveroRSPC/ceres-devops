@@ -80,7 +80,7 @@ jobs:
             version = "${{ env.VERSION }}".strip(",latest")
 
             if len(version.split(",")) > 1:
-              print("Two tags are set on the same image aborting...")
+              print('\033[1m' + "Two tags found using the same image, aborting...")
               exit(1)
             
             print ("version detected: {version}")
