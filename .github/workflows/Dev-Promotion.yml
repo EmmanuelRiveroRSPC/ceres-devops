@@ -56,10 +56,16 @@ jobs:
           distribution: 'adopt-hotspot'
       ### Maven build
   #    - name: Build with Maven
-  #      run: mvn -B deploy -s .mvn/settings.xml build-helper:parse-version versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT versions:commit
+  #      shell: bash
+  #      run: |
+  #        mvn build-helper:parse-version versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT versions:commit
+  #        mvn -B deploy -s .mvn/settings.xml
 
       - name: Build with Maven
-        run: mvn -B verify -s .mvn/settings.xml build-helper:parse-version versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT versions:commit
+        shell: bash
+        run: |
+          mvn build-helper:parse-version versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT versions:commit
+          mvn -B verify -s .mvn/settings.xml
       
       - run: ls ./target
 
