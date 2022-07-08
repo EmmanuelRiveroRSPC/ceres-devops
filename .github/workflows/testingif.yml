@@ -19,7 +19,7 @@ jobs:
       version: ${{ steps.version.outputs.gcloud_version }}
   
     steps:
-      - if: ${{ inputs.testout }}
+      - if: ${{ !inputs.testout }}
         run: echo run1 ${{inputs.testout}}
       
       - if: ${{ inputs.testout }}
