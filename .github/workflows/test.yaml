@@ -19,5 +19,5 @@ jobs:
     needs: Setup
 
     steps:
-      - run: echo ${{ needs.Setup.outputs.currentVersion }}
-      - run: echo ${{ needs.Setup.outputs.newVersion }}
+      - run: echo ${{ needs.Setup.outputs.current_version }}
+      - run: echo ${{ needs.Setup.outputs.new_version }}
