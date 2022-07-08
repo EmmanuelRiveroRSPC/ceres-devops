@@ -14,10 +14,10 @@ on:
       GCPCreds:
         required: true
     outputs:
-      currrentVersion:
+      currrent_version:
         description: "Last image version"
         value: ${{ jobs.version.outputs.currentVersion }}
-      newVersion:
+      new_version:
         description: "Last image version"
         value: ${{ jobs.version.outputs.newVersion }}
 
