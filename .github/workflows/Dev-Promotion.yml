@@ -14,53 +14,87 @@ on:
       - '.github/workflows/**'
       - 'test-script' 
 
+
+
 jobs:
+  Setup:
+    uses: ./.github/workflows/getLastVersion.yml
+    with:
+      image: testdevops
+    secrets:
+      account:  ${{ secrets.GCP_DEV_ACC }}
+      GCPCreds: ${{ secrets.GCP_DEV }} 
+
+
   Build:
+    needs: Setup
+
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    ### Seting up runner env:
+      - uses: actions/checkout@v3
 
-    - uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GCP_DEV }}'
-        
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v0'
+      - uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_DEV }}'
+          
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
 
-    - name: 'Get settings from GS bucket'
-      run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
+      - name: 'Get settings from GS bucket'
+        run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
 
-    - name: .m2 forder [*** fix it please ***]
-      run: sed -i 's*/root/.m2/*./.m2/*g' ./.mvn/settings.xml
+      - name: .m2 forder [*** fix it please ***]
+        run: sed -i 's*/root/.m2/*./.m2/*g' ./.mvn/settings.xml
 
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        java-version: '14'
-        distribution: 'adopt-hotspot'
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '14'
+          distribution: 'adopt-hotspot'
 
-#    - name: Build with Maven
-#      run: mvn -B deploy -s .mvn/settings.xml
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
-    - name: Build with Maven
-      run: mvn -B verify -s .mvn/settings.xml
+      ### Resolving version
+      - uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            version = "${{ Setup.outputs.version }}".strip(",latest")
 
-#    - name: Image build
-#      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest .
+            if len(version.split(",")) > 2:
+              print("Two tags are set on the same image aborting...")
+              exit(1)
+            
+            print ("version detected: {version}")
+            set_env("VERSION", compile-version)      
+          
+          
 
-    - name: Image build
-      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest .
+  #    - name: Build with Maven
+  #      run: mvn -B deploy -s .mvn/settings.xml
 
-    - name: Docker login
-      run: gcloud auth configure-docker gcr.io -q
+      - name: Build with Maven
+        run: mvn -B verify -s .mvn/settings.xml versions:set -DnewVersion=${{ env.version }}-SNAPSHOT
 
-#    - name: Image push
-#      run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest
+  #    - name: Image build
+  #      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest .
 
-    - name: Image push
-      run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest
+      - name: Image build
+        run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest .
+
+      - name: Docker login
+        run: gcloud auth configure-docker gcr.io -q
+
+  #    - name: Image push
+  #      run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest
+
+      - name: Image push
+        run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest
 
   Deploy:
     runs-on: ubuntu-latest
@@ -68,37 +102,37 @@ jobs:
 
     steps:
 
-    - uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GCP_DEV }}'
-        
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v0'
+      - uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_DEV }}'
+          
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
 
-    - name: K8s login
-      run: gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ secrets.GCP_DEV_ACC }}
+      - name: K8s login
+        run: gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ secrets.GCP_DEV_ACC }}
 
-    - name: Checkout helm-repo
-      uses: actions/checkout@v3
-      with:
-        repository: rax-maas/helm-ceres
-        ref: master
-        path: helm-ceres
-        token: ${{ secrets.GIT_TOKEN }}
+      - name: Checkout helm-repo
+        uses: actions/checkout@v3
+        with:
+          repository: rax-maas/helm-ceres
+          ref: master
+          path: helm-ceres
+          token: ${{ secrets.GIT_TOKEN }}
 
-    - uses: azure/setup-helm@v3
-      with:
-        version: 3.9.0
-      id: install
+      - uses: azure/setup-helm@v3
+        with:
+          version: 3.9.0
+        id: install
 
-    - name: Getting latest digest
-      shell: bash
-      run: | 
-        DIGEST=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
-        echo "DIGEST=$(echo $DIGEST)" >> $GITHUB_ENV
+      - name: Getting latest digest
+        shell: bash
+        run: | 
+          DIGEST=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
+          echo "DIGEST=$(echo $DIGEST)" >> $GITHUB_ENV
 
-    - name: test digest
-      run: echo ${{ env.DIGEST }} 
+      - name: test digest
+        run: echo ${{ env.DIGEST }} 
     
-#    - name: Helm upgrade
-#      run: helm upgrade helm-ceres $HELM_CHART --set image.repository=${IMAGE_NAME}@sha256,image.tag=${{ env.DIGEST }}
+#      - name: Helm upgrade
+#        run: helm upgrade helm-ceres $HELM_CHART --set image.repository=${IMAGE_NAME}@sha256,image.tag=${{ env.DIGEST }}

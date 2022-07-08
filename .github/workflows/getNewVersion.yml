@@ -50,6 +50,8 @@ jobs:
             tree = ET.parse('pom.xml')
             root = tree.getroot()
 
+
+
             pomVersion = "${{ env.POM_VERSION }}".split(".")
 
             major = pomVersion[0]
@@ -68,28 +70,9 @@ jobs:
             print ("version detected: {majorVersion}")
             set_env("BASE_VERSION", BaseVersion)           
 
-      - shell: bash
-        run: | 
-          VERSION=$(gcloud container images list-tags gcr.io/${{ secrets.account }}/${{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)')
-          #echo "::set-output name=gcloud_version::${VERSION}"
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
-      - uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            version = "${{ env.VERSION }}".strip(",latest")
-
-            if len(version.split(",")) > 2:
-              print("Two tags are set on the same image aborting...")
-              exit(1)
-            
-            print ("version detected: {version}")
-            set_env("LAST_VERSION", version)
       - id: version
         shell: bash
         run: | 
-          echo "::set-output name=gcloud_version::${{ env.LAST_VERSION }}"
-
-
-      
+          VERSION=$(gcloud container images list-tags gcr.io/${{ secrets.account }}/${{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)')
+          echo "::set-output name=gcloud_version::${VERSION}"
 
