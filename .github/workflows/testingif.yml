@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
+      #steps<id>.uptpus<out putname>
       version: ${{ steps.version.outputs.gcloud_version }}
   
     steps:
