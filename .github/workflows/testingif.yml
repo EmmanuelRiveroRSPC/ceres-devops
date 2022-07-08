@@ -9,6 +9,10 @@ on:
         type: boolean
         default: false
       
+    outputs:
+      version:
+        description: "Last image version"
+        value: ${{ jobs.version.outputs.version }}
       
 jobs:
   test1:
@@ -20,9 +24,15 @@ jobs:
   
     steps:
       - if: ${{ !inputs.testout }}
-        run: echo run1 ${{ !inputs.testout }}
+        id: version
+        shell: bash
+        run: | 
+          echo "::set-output name=gcloud_version::output1"
       
       - if: ${{ inputs.testout }}
-        run: echo run2 ${{ inputs.testout }}
+        id: version
+        shell: bash
+        run: | 
+          echo "::set-output name=gcloud_version::output2"
 
       - run: echo run3
