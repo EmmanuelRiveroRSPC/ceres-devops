@@ -85,20 +85,13 @@ jobs:
               print('\033[1m' + "Two tags found using the same image, aborting...")
               exit(1)
             
-            print ("version detected: {version}")
+            print (f"version detected: {version}")
             set_env("CURRENT_VERSION", version)
       
-      # Returns current version
-      - id: currentVersion
-        shell: bash
-        run: | 
-          echo "::set-output name=currentVersion::${{ env.CURRENT_VERSION }}"
-
-      # Returns build + 1 version
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            oldVersion= "${{ env.VERSION }}".split(".")
+            oldVersion= "${{ env.CURRENT_VERSION }}".split(".")
 
             major = oldVersion[0]
             minor = oldVersion[1]
@@ -109,6 +102,13 @@ jobs:
             print ("new version: {newVersion}")
             set_env("NEW_VERSION", newVersion)    
 
+      # Returns current version
+      - id: currentVersion
+        shell: bash
+        run: | 
+          echo "::set-output name=currentVersion::${{ env.CURRENT_VERSION }}"
+
+      # Returns build + 1 version
       - id: newVersion
         shell: bash
         run: | 
