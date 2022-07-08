@@ -19,7 +19,6 @@ jobs:
     uses: ./.github/workflows/getVersion.yml
     with:
       image: testdevops
-      newVersion: true
     secrets:
       account:  ${{ secrets.GCP_DEV_ACC }}
       GCPCreds: ${{ secrets.GCP_DEV }} 
@@ -31,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    ### Seting up runner env:
+    ### Seting up runner env ###
       - uses: actions/checkout@v3
 
       - uses: 'google-github-actions/auth@v0'
@@ -44,6 +43,9 @@ jobs:
       - name: 'Get settings from GS bucket'
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
 
+      - name: Docker login
+        run: gcloud auth configure-docker gcr.io -q
+
       - name: .m2 forder [*** fix it please ***]
         run: sed -i 's*/root/.m2/*./.m2/*g' ./.mvn/settings.xml
 
@@ -52,21 +54,21 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt-hotspot'
-          
+      ### Maven build
   #    - name: Build with Maven
-  #      run: mvn -B deploy -s .mvn/settings.xml
+  #      run: mvn -B deploy -s .mvn/settings.xml versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
 
       - name: Build with Maven
-        run: mvn -B verify -s .mvn/settings.xml versions:set -DnewVersion=${{ needs.Setup.outputs.version }}-SNAPSHOT
+        run: mvn -B verify -s .mvn/settings.xml versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
+      
+      - run: ls ./target
 
   #    - name: Image build
-  #      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest .
+  #      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest --build-arg ARTIFACT_VERSION=${{ needs.Setup.outputs.new_version }} .
 
+      ### Image build and push
       - name: Image build
-        run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest .
-
-      - name: Docker login
-        run: gcloud auth configure-docker gcr.io -q
+        run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest --build-arg ARTIFACT_VERSION=${{ needs.Setup.outputs.new_version }} .
 
   #    - name: Image push
   #      run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest
@@ -79,7 +81,7 @@ jobs:
     needs: [Build]
 
     steps:
-
+      ### Seting up runner env ###
       - uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{ secrets.GCP_DEV }}'
@@ -102,7 +104,9 @@ jobs:
         with:
           version: 3.9.0
         id: install
-
+      
+      ### deploying
+      
       - name: Getting latest digest
         shell: bash
         run: | 
