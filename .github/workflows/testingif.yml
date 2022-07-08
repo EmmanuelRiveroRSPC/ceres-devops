@@ -12,7 +12,7 @@ on:
     outputs:
       version:
         description: "Last image version"
-        value: ${{ jobs.version.outputs.version }}
+        value: ${{ jobs.test1.outputs.version }}
       
 jobs:
   test1:
