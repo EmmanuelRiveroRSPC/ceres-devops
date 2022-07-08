@@ -97,7 +97,7 @@ jobs:
             minor = oldVersion[1]
             build = oldVersion[2]
 
-            newVersion = f"{major}.{minor}.{int({build} + 1)}"
+            newVersion = f"{major}.{minor}.{int(build) + 1}"
 
             print ("new version: {newVersion}")
             set_env("NEW_VERSION", newVersion)    
