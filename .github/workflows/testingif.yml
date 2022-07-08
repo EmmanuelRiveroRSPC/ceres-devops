@@ -1,0 +1,28 @@
+---
+name: testing if
+
+on:
+  workflow_call:
+    inputs:
+      testout:
+        required: false
+        type: boolean
+        default: false
+      
+      
+jobs:
+  test1:
+    name: test 1
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.version.outputs.gcloud_version }}
+  
+    steps:
+      - if: ${{ inputs.testout }} == false
+        run: echo run1
+      
+      - if: ${{ inputs.testout }} == true
+        run: echo run2
+
+      - run: echo run3
