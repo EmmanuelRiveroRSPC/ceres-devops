@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      version: ${{ steps.test1.outputs.gcloud_version }}
+      version: ${{ steps.version.outputs.gcloud_version }}
   
     steps:
 
