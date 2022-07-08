@@ -36,7 +36,9 @@ jobs:
           echo "COMPOSE=compose" >> $GITHUB_ENV
 
       - if: ${{ inputs.testout }}
-        run: echo "VERSION=ouput2-${{ env.COMPOSE }}" >> $GITHUB_ENV
+        shell: bash
+        run: |
+          echo "VERSION=ouput2-${{ env.COMPOSE }}" >> $GITHUB_ENV
 
       - run: echo ${{ env.VERSION}}
 
