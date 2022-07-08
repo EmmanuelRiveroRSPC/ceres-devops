@@ -20,9 +20,9 @@ jobs:
   
     steps:
       - if: ${{ !inputs.testout }}
-        run: echo run1 ${{inputs.testout}}
+        run: echo run1 ${{ !inputs.testout }}
       
       - if: ${{ inputs.testout }}
-        run: echo run2 ${{inputs.testout}}
+        run: echo run2 ${{ inputs.testout }}
 
       - run: echo run3
