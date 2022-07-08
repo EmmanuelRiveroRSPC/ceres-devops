@@ -24,15 +24,18 @@ jobs:
   
     steps:
       - if: ${{ !inputs.testout }}
-        id: version
         shell: bash
         run: | 
-          echo "::set-output name=gcloud_version::output1"
+          echo "VERSION=output1" >> $GITHUB_ENV
       
       - if: ${{ inputs.testout }}
-        id: version
         shell: bash
         run: | 
-          echo "::set-output name=gcloud_version::output2"
+          echo "VERSION=output2" >> $GITHUB_ENV
 
       - run: echo run3
+
+      - id: version
+        shell: bash
+        run: | 
+          echo "::set-output name=gcloud_version::${{ env.VERSION }}"
