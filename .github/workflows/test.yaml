@@ -8,7 +8,7 @@ jobs:
   Setup:
     uses: ./.github/workflows/testingif.yml
     with:
-      testout: true
+      testout: false
       
   testit:
     runs-on:  ubuntu-latest
