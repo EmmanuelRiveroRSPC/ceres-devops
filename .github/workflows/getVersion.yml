@@ -14,7 +14,7 @@ on:
       GCPCreds:
         required: true
     outputs:
-      currrent_version:
+      current_version:
         description: "Last image version"
         value: ${{ jobs.version.outputs.currentVersion }}
       new_version:
