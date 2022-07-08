@@ -79,7 +79,7 @@ jobs:
           script: |
             version = "${{ env.VERSION }}".strip(",latest")
 
-            if len(version.split(",")) > 2:
+            if len(version.split(",")) > 1:
               print("Two tags are set on the same image aborting...")
               exit(1)
             
