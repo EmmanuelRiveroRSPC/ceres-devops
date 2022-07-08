@@ -6,10 +6,10 @@ env:
 
 # Only trigger, when the build workflow succeeded
 on:
-#  workflow_run:
-#    workflows: ["Dev-Smoke-test"]
-#    types:
-#      - completed
+  workflow_run:
+    workflows: ["Dev-Smoke-test"]
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
