@@ -42,4 +42,4 @@ jobs:
       - id: version
         shell: bash
         run: | 
-          echo "::set-output name=gcloud_version::yolo"
+          echo "::set-output name=gcloud_version::${{ env.VERSION}}"
