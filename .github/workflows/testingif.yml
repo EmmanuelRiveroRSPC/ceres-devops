@@ -20,9 +20,10 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      version: ${{ steps.version.outputs.gcloud_version }}
+      version: ${{ steps.test1.outputs.gcloud_version }}
   
     steps:
+
       - if: ${{ !inputs.testout }}
         shell: bash
         run: | 
@@ -34,6 +35,8 @@ jobs:
           echo "VERSION=output2" >> $GITHUB_ENV
 
       - run: echo run3
+
+      - run: echo {{ env.VERSION}}
 
       - id: version
         shell: bash
