@@ -48,6 +48,8 @@ jobs:
         shell: bash
         run: |
           mvn versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
+          git config --global user.email "mmi-automation@rackspace.com"
+          git config --global user.name "mmi-automation"
           git checkout -b "testversion"
           git add ./pom.xml
           git commit -m "Github Actions build: ${{ env.GITHUB_RUN_ID }} POM version update"
