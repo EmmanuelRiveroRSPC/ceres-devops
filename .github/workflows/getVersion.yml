@@ -1,5 +1,5 @@
 ---
-name: Get Last version
+name: getVersion
 
 on:
   workflow_call:
