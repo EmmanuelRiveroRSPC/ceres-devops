@@ -53,7 +53,7 @@ jobs:
           git checkout -b "testversion"
           git add ./pom.xml
           git commit -m "Github Actions build: ${{ env.GITHUB_RUN_ID }} POM version update"
-          git push origin testversion
+          git push origin master
 
       - name: promoting artifact
         run: echo "build me please"
