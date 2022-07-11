@@ -28,6 +28,8 @@ jobs:
     steps:
 
       ### Seting up runner env ###
+      - uses: actions/checkout@v3
+      
       - uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{ secrets.GCP_DEV }}'
@@ -37,14 +39,6 @@ jobs:
 
       - name: 'Set up Jfrog CLI'
         uses: jfrog/setup-jfrog-cli@v2
-
-      - name: Checkout helm-repo
-        uses: actions/checkout@v3
-        with:
-          repository: rax-maas/helm-ceres
-          ref: master
-          path: helm-ceres
-          token: ${{ secrets.GIT_TOKEN }}
 
       #Promoting image & artifact
       - name: Retag
@@ -59,10 +53,20 @@ jobs:
       - name: promoting artifact
         run: echo "build me please"
 
+      
+  Stage-Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout helm-repo
+        uses: actions/checkout@v3
+        with:
+          repository: rax-maas/helm-ceres
+          ref: master
+          path: helm-ceres
+          token: ${{ secrets.GIT_TOKEN }}
+      
       - name: test helm
         run: helm show values helm-ceres/charts/ceres
 
 #      - name: Helm upgrade
 #        run: helm upgrade helm-ceres $HELM_CHART --set image.repository=${IMAGE_NAME}@sha256,image.tag=${{ needs.Setup.outputs.new_version }}      
-      
-        
