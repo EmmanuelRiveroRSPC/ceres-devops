@@ -45,10 +45,13 @@ jobs:
         run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${{ needs.Setup.outputs.new_version }}
 
       - name: Updating POM
-        run: mvn versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
-
-      - name: test POM
-        run: cat pom.xml
+        shell: bash
+        run: |
+          mvn versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
+          git checkout -b "testversion"
+          git add ./pom.xml
+          git commit -m "Github Actions build: ${{ env.GITHUB_RUN_ID }} POM version update"
+          git push origin testversion
 
       - name: promoting artifact
         run: echo "build me please"
