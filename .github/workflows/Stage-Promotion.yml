@@ -21,7 +21,7 @@ jobs:
       account:  ${{ secrets.GCP_DEV_ACC }}
       GCPCreds: ${{ secrets.GCP_DEV }} 
 
-  Image-promotion:
+  promotion:
     runs-on: ubuntu-latest
     needs: Setup
 
@@ -48,7 +48,7 @@ jobs:
         run: mvn versions:update-properties -Dproperties=${{ needs.Setup.outputs.new_version }}-SNAPSHOT -DincludeProperties={version} 
 
       - name: test POM
-        run: cat POM.xml
+        run: cat pom.xml
 
       - name: promoting artifact
         run: echo "build me please"
@@ -56,6 +56,8 @@ jobs:
       
   Stage-Deploy:
     runs-on: ubuntu-latest
+    needs: [promotion]
+
     steps:
       - name: Checkout helm-repo
         uses: actions/checkout@v3
