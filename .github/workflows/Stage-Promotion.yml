@@ -48,7 +48,7 @@ jobs:
 
       #Promoting image & artifact
       - name: Retag
-        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${{ needs.Setup.outputs.new_version }}}
+        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${{ needs.Setup.outputs.new_version }}
 
       - name: Updating POM
         run: mvn versions:update-properties -Dproperties=${{ needs.Setup.outputs.new_version }}-SNAPSHOT -DincludeProperties={version} 
