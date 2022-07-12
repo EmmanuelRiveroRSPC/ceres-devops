@@ -52,7 +52,7 @@ jobs:
           git config --global user.name "mmi-automation"
           git add ./pom.xml
           #git commit -m "${{github.workflow }}: ${{ github.run_number }} - POM.xml update new version: ${{ needs.Setup.outputs.new_version }}" | echo
-          git push origin master | echo
+          git push origin master | true
 
       - name: 'Artifact promotion'
         run: echo "build me please"
