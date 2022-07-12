@@ -51,7 +51,6 @@ jobs:
           git config --global user.email "mmi-automation@rackspace.com"
           git config --global user.name "mmi-automation"
           git add ./pom.xml
-          git status
           git commit -m "${{github.workflow }}: ${{ github.run_number }} POM.xml update new version: ${{ needs.Setup.outputs.new_version }}" || true
           git push origin master || true
 
