@@ -1,5 +1,5 @@
 ---
-name: testing
+name: testing2
 
 on:
   workflow_dispatch:
