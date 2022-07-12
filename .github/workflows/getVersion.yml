@@ -80,7 +80,7 @@ jobs:
         with:
           script: |
             lastVersion = "${{ env.LAST_VERSION }}"
-            if not not:
+            if not lastVersion:
               print ("No buid version detected for: ${{ env.BASE_VERSION }}")
               print ("Will generate a new version starting at ${{ env.BASE_VERSION }}.0")
               set_env("CURRENT_VERSION", "${{ env.BASE_VERSION }}.0")
