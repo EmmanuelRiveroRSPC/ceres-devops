@@ -51,7 +51,7 @@ jobs:
           git config --global user.email "mmi-automation@rackspace.com"
           git config --global user.name "mmi-automation"
           git add ./pom.xml
-          git commit -m "Github Actions build: ${{ env.GITHUB_RUN_ID }} POM version update"
+          git commit -m "Github Actions build: ${{ env.GITHUB_RUN_ID }} POM new version update ${{ needs.Setup.outputs.new_version }}"
           git push origin master
 
       - name: promoting artifact
