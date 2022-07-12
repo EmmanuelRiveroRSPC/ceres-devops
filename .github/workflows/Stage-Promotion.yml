@@ -41,10 +41,10 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v2
 
       #Promoting image & artifact
-      - name: Retag
+      - name: 'Image promotion'
         run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${{ needs.Setup.outputs.new_version }}
 
-      - name: Updating POM
+      - name: 'POM promotion'
         shell: bash
         run: |
           mvn versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
@@ -52,9 +52,9 @@ jobs:
           git config --global user.name "mmi-automation"
           git add ./pom.xml
           #git commit -m "${{github.workflow }}: ${{ github.run_number }} - POM.xml update new version: ${{ needs.Setup.outputs.new_version }}" | echo
-          #git push origin master | echo
+          git push origin master | echo
 
-      - name: promoting artifact
+      - name: 'Artifact promotion'
         run: echo "build me please"
 
       
