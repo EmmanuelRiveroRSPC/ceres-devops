@@ -81,9 +81,9 @@ jobs:
           script: |
             lastVersion = "${{ env.LAST_VERSION }}"
             if not not:
-              print ("No buid version detected for: ${{ BASE_VERSION }}")
-              print ("Will generate a new version starting at ${{ BASE_VERSION }}.0")
-              set_env("CURRENT_VERSION", "${{ BASE_VERSION }}.0")
+              print ("No buid version detected for: ${{ env.BASE_VERSION }}")
+              print ("Will generate a new version starting at ${{ env.BASE_VERSION }}.0")
+              set_env("CURRENT_VERSION", "${{ env.BASE_VERSION }}.0")
             else:
               version = "${{ env.LAST_VERSION }}".strip(",latest")
 
@@ -99,9 +99,9 @@ jobs:
           script: |
             lastVersion = "${{ env.LAST_VERSION }}"
             if not lastVersion:
-              print ("No buid version detected for: ${{ BASE_VERSION }}")
-              print ("Will generate a new version starting at ${{ BASE_VERSION }}.0")
-              set_env("NEW_VERSION", "${{ BASE_VERSION }}.0")
+              print ("No buid version detected for: ${{ env.BASE_VERSION }}")
+              print ("Will generate a new version starting at ${{ env.BASE_VERSION }}.0")
+              set_env("NEW_VERSION", "${{ env.BASE_VERSION }}.0")
             else:
               oldVersion= "${{ env.CURRENT_VERSION }}".split(".")
 
