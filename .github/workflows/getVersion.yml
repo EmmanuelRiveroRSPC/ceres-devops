@@ -79,8 +79,10 @@ jobs:
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            if not ${{ env.LAST_VERSION }}:
+            lastVersion = "${{ env.LAST_VERSION }}"
+            if not not:
               print ("No buid version detected for: ${{ BASE_VERSION }}")
+              print ("Will generate a new version starting at ${{ BASE_VERSION }}.0")
               set_env("CURRENT_VERSION", "${{ BASE_VERSION }}.0")
             else:
               version = "${{ env.LAST_VERSION }}".strip(",latest")
@@ -95,8 +97,10 @@ jobs:
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            if not ${{ env.LAST_VERSION }}:
+            lastVersion = "${{ env.LAST_VERSION }}"
+            if not lastVersion:
               print ("No buid version detected for: ${{ BASE_VERSION }}")
+              print ("Will generate a new version starting at ${{ BASE_VERSION }}.0")
               set_env("NEW_VERSION", "${{ BASE_VERSION }}.0")
             else:
               oldVersion= "${{ env.CURRENT_VERSION }}".split(".")
