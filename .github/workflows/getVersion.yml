@@ -79,28 +79,36 @@ jobs:
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            version = "${{ env.LAST_VERSION }}".strip(",latest")
+            if not ${{ env.LAST_VERSION }}:
+              print ("No buid version detected for: ${{ BASE_VERSION }}")
+              set_env("CURRENT_VERSION", "${{ BASE_VERSION }}.0")
+            else:
+              version = "${{ env.LAST_VERSION }}".strip(",latest")
 
-            if len(version.split(",")) > 1:
-              print('\033[1m' + "Two tags found using the same image, aborting...")
-              exit(1)
-            
-            print (f"version detected: {version}")
-            set_env("CURRENT_VERSION", version)
-      
+              if len(version.split(",")) > 1:
+                print('\033[1m' + "Two tags found using the same image, aborting...")
+                exit(1)
+              
+              print (f"version detected: {version}")
+              set_env("CURRENT_VERSION", version)
+        
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            oldVersion= "${{ env.CURRENT_VERSION }}".split(".")
+            if not ${{ env.LAST_VERSION }}:
+              print ("No buid version detected for: ${{ BASE_VERSION }}")
+              set_env("NEW_VERSION", "${{ BASE_VERSION }}.0")
+            else:
+              oldVersion= "${{ env.CURRENT_VERSION }}".split(".")
 
-            major = oldVersion[0]
-            minor = oldVersion[1]
-            build = oldVersion[2]
+              major = oldVersion[0]
+              minor = oldVersion[1]
+              build = oldVersion[2]
 
-            newVersion = f"{major}.{minor}.{int(build) + 1}"
+              newVersion = f"{major}.{minor}.{int(build) + 1}"
 
-            print ("new version: {newVersion}")
-            set_env("NEW_VERSION", newVersion)    
+              print ("new version: {newVersion}")
+              set_env("NEW_VERSION", newVersion)    
 
       # Returns current version
       - id: currentVersion
