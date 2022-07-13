@@ -63,7 +63,7 @@ jobs:
       - name: 'Artifact promotion'
         shell: bash
         run: |
-          mvn dependency:3.3.0:get -DremoteRepositories=snapshots \
+          mvn dependency:3.3.0:get -DremoteRepositories=https://salus-artifactory.dev.monplat.rackspace.net:443/artifactory/libs-snapshot/ \
                             -DgroupId=com.rackspace.ceres \
                             -DartifactId=ceres \
                             -Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
