@@ -60,17 +60,18 @@ jobs:
           git commit -m "${{github.workflow }}: ${{ github.run_number }} - POM.xml update new version: ${{ needs.Setup.outputs.new_version }}" || true
           git push origin master || true
 
+      ### -Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
       - name: 'Artifact promotion'
         shell: bash
         run: |
-          mvn org.apache.maven.plugins:maven-dependency-plugin:2.10:get -DremoteRepositories=https://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-snapshot/ \
+          mvn org.apache.maven.plugins:maven-dependency-plugin:2.10:get -DremoteRepositories=snapshots \
                             -DgroupId=com.rackspace.ceres \
                             -DartifactId=ceres \
                             -Dversion=0.0.1-SNAPSHOT \
                             -Dtransitive=false \
                             -Ddest=./ceres-${{ needs.Setup.outputs.new_version }}.jar
           
-          #mvn deploy:deploy-file -Dfile=${{ needs.Setup.outputs.new_version }}.jar -DrepositoryId=libs-release -DartifactId=ceres -DartifactId=com.rackspace.ceres
+          #mvn deploy:deploy-file -Dfile=${{ needs.Setup.outputs.new_version }}.jar -DrepositoryId=central -DartifactId=ceres -DartifactId=com.rackspace.ceres
         
       - name: test
         run: |
