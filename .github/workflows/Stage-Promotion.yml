@@ -66,9 +66,9 @@ jobs:
           mvn dependency:get -DremoteRepositories=snapshots \
                             -DgroupId=com.rackspace.ceres \
                             -DartifactId=ceres \
-                            ###-Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
                             -Dversion=0.0.1-SNAPSHOT \
-                            -Dtransitive=false -Ddest=./ceres-{{ needs.Setup.outputs.new_version }}.jar
+                            -Dtransitive=false \
+                            -Ddest=./ceres-{{ needs.Setup.outputs.new_version }}.jar
           
           #mvn deploy:deploy-file -Dfile=${{ needs.Setup.outputs.new_version }}.jar -DrepositoryId=libs-release -DartifactId=ceres -DartifactId=com.rackspace.ceres
         
