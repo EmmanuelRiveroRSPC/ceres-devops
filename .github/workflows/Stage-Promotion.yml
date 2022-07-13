@@ -40,6 +40,12 @@ jobs:
       - name: 'Set up Jfrog CLI'
         uses: jfrog/setup-jfrog-cli@v2
 
+      - name: 'Use gcloud CLI'
+        run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
+
+      - name: .m2 forder [*** fix it please ***]
+        run: sed -i 's*/root/.m2/*./.m2/*g' ./.mvn/settings.xml
+
       #Promoting image & artifact
       - name: 'Image promotion'
         run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${{ needs.Setup.outputs.new_version }}
@@ -57,7 +63,7 @@ jobs:
       - name: 'Artifact promotion'
         shell: bash
         run: |
-          mvn dependency:3.3.0:get -DremoteRepositories=https://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-snapshot-local/ \
+          mvn dependency:3.3.0:get -DremoteRepositories=libs-snapshots \
                             -DgroupId=com.rackspace.ceres \
                             -DartifactId=ceres \
                             -Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
