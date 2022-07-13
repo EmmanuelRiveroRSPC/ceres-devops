@@ -67,15 +67,18 @@ jobs:
                             -DgroupId=com.rackspace.ceres \
                             -DartifactId=ceres \
                             -Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
-                            -Dtransitive=false -Ddest=./${{ needs.Setup.outputs.new_version }}.jar
+                            #####-Dtransitive=false -Ddest=./ceres-{{ needs.Setup.outputs.new_version }}.jar
+                            
+                            -Dtransitive=false -Ddest=./ceres-0.0.1.jar
           
           #mvn deploy:deploy-file -Dfile=${{ needs.Setup.outputs.new_version }}.jar -DrepositoryId=libs-release -DartifactId=ceres -DartifactId=com.rackspace.ceres
         
       - name: test
         run: |
           ls
-          md5sum ${{ needs.Setup.outputs.new_version }}
-      
+          #####md5sum ceres-${{ needs.Setup.outputs.new_version }}.jar
+          ceres-ceres-0.0.1.jar
+
   Stage-Deploy:
     runs-on: ubuntu-latest
     needs: [promotion]
