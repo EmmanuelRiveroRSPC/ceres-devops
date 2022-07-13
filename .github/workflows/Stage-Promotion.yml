@@ -40,7 +40,7 @@ jobs:
       - name: 'Set up Jfrog CLI'
         uses: jfrog/setup-jfrog-cli@v2
 
-      - name: 'Use gcloud CLI'
+      - name: 'Maven settings'
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
 
       - name: .m2 forder [*** fix it please ***]
@@ -63,7 +63,7 @@ jobs:
       - name: 'Artifact promotion'
         shell: bash
         run: |
-          mvn dependency:3.3.0:get -DremoteRepositories=libs-snapshots \
+          mvn dependency:3.3.0:get -DremoteRepositories=snapshots \
                             -DgroupId=com.rackspace.ceres \
                             -DartifactId=ceres \
                             -Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
