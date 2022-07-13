@@ -47,7 +47,7 @@ jobs:
       - name: 'POM promotion'
         shell: bash
         run: |
-          mvn versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
+          mvn versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}
           git config --global user.email "mmi-automation@rackspace.com"
           git config --global user.name "mmi-automation"
           git add ./pom.xml
@@ -55,8 +55,20 @@ jobs:
           git push origin master || true
 
       - name: 'Artifact promotion'
-        run: echo "build me please"
-
+        shell: bash
+        run: |
+          mvn dependency:get -DremoteRepositories=http://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-snapshot-local \
+                            -DgroupId=com.rackspace.ceres \
+                            -DartifactId=ceres \
+                            -Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
+                            -Dtransitive=false -Ddest=./${{ needs.Setup.outputs.new_version }}.jar
+          
+          #mvn deploy:deploy-file -Dfile=${{ needs.Setup.outputs.new_version }}.jar -DrepositoryId=libs-release -DartifactId=ceres -DartifactId=com.rackspace.ceres
+        
+      - name: test
+        run: |
+          ls
+          md5sum ${{ needs.Setup.outputs.new_version }}
       
   Stage-Deploy:
     runs-on: ubuntu-latest
