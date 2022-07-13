@@ -200,12 +200,12 @@
         <enabled>false</enabled>
       </snapshots>
       <id>libs-release</id>
-      <url>https://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-release</url>
+      <url>http://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-release</url>
     </repository>
     <repository>
       <snapshots />
       <id>libs-snapshots</id>
-      <url>https://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-snapshot</url>
+      <url>http://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-snapshot</url>
     </repository>
   </repositories>
   <pluginRepositories>
@@ -214,12 +214,12 @@
         <enabled>false</enabled>
       </snapshots>
       <id>libs-release</id>
-      <url>https://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-release</url>
+      <url>http://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-release</url>
     </pluginRepository>
     <pluginRepository>
       <snapshots />
       <id>libs-snapshots</id>
-      <url>https://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-snapshot</url>
+      <url>http://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-snapshot</url>
     </pluginRepository>
   </pluginRepositories>
 
