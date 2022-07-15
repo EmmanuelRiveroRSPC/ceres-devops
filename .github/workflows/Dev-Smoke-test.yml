@@ -20,7 +20,7 @@ jobs:
           python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
-      - uses: ./.github/workflows/GCPSetup.yaml
+      - uses: ./.github/workflows/GCPSetup
         with:
           account: ${{ secrets.GCP_DEV_ACC }}
           GCPCreds: ${{ secrets.GCP_DEV }} 

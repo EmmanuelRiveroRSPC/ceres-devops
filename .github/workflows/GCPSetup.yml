@@ -1,6 +1,5 @@
 ---
-name: k8sLogin
-
+name: GCPSetup
 on:
   workflow_call:
     inputs:
