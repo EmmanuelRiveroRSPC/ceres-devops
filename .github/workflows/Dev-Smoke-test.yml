@@ -31,6 +31,7 @@ jobs:
         shell: bash
         run: |
           gcloud components install gke-gcloud-auth-plugin
+          export USE_GKE_GCLOUD_AUTH_PLUGIN=True
           gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ secrets.GCP_DEV_ACC }}
 
       - name: Pod Test
