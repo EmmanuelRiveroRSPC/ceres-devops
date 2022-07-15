@@ -23,9 +23,12 @@ runs:
       with:
         credentials_json: '${{ inputs.GCPCreds }}'
 
-    - if: ${{ inputs.k8sSetup }} == 'TRUE'
-      shell: bash
+    - shell: bash
       run: |
-        gcloud components install gke-gcloud-auth-plugin
-        export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-        gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ inputs.GCPaccount }}
+        if [ "${{ inputs.k8sSetup }}" = "TRUE" ]; then
+          gcloud components install gke-gcloud-auth-plugin
+          export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+          gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ inputs.GCPaccount }}
+        else
+          echo "Skiping k8s setup"
+        fi
