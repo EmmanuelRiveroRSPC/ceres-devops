@@ -28,7 +28,10 @@ jobs:
           credentials_json: '${{ secrets.GCP_DEV }}'
 
       - name: K8s login
-        run: gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ secrets.GCP_DEV_ACC }}
+        shell: bash
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+          gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ secrets.GCP_DEV_ACC }}
 
       - name: Pod Test
 #        run: python test-scripts/k8sPodStatus.py -l ceres-new -s app.kubernetes.io/name
