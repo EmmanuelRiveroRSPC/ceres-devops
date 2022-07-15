@@ -23,7 +23,7 @@ runs:
       with:
         credentials_json: '${{ inputs.GCPCreds }}'
 
-    - if: ${{ inputs.k8sInstall }} == "TRUE"
+    - if: ${{ inputs.k8sInstall }} == TRUE
       shell: bash
       run: |
         gcloud components install gke-gcloud-auth-plugin
