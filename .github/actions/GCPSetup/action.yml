@@ -9,18 +9,21 @@ inputs:
   GCPCreds:
     required: true
     description: GCP credentials
+  k8sSetup:
+    required: false
+    default: ""
+    description: "install or not k8s credentials, with TRUE Sas string"
 
 runs:
   using: "composite"
   steps:
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v0'
+    - uses: 'google-github-actions/setup-gcloud@v0'
 
     - uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ inputs.GCPCreds }}'
 
-    - name: K8s login
+    - if: ${{ inputs.k8sInstall }} == "TRUE"
       shell: bash
       run: |
         gcloud components install gke-gcloud-auth-plugin

@@ -37,8 +37,10 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_DEV }}'
           
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
+      - uses: ./.github/actions/GCPSetup
+        with:
+          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
+          GCPCreds: ${{ secrets.GCP_DEV }} 
 
       - name: 'Maven settings'
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
@@ -98,11 +100,10 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_DEV }}'
           
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
-
-      - name: K8s login
-        run: gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ secrets.GCP_DEV_ACC }}
+      - uses: ./.github/actions/GCPSetup
+        with:
+          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
+          GCPCreds: ${{ secrets.GCP_DEV }} 
 
       - name: Checkout helm-repo
         uses: actions/checkout@v3

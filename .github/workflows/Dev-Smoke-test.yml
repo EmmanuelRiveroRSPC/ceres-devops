@@ -22,6 +22,7 @@ jobs:
         with:
           GCPaccount: ${{ secrets.GCP_DEV_ACC }}
           GCPCreds: ${{ secrets.GCP_DEV }} 
+          k8sSetup: "TRUE"
 
       - uses: actions/setup-python@v4
         with:

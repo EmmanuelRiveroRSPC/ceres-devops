@@ -9,4 +9,8 @@ jobs:
     runs-on:  ubuntu-latest
 
     steps:
-      - run: echo '${{ toJSON(github) }}'
+      - uses: ./.github/actions/GCPSetup
+        with:
+          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
+          GCPCreds: ${{ secrets.GCP_DEV }} 
+          k8sSetup: "TRUE"
