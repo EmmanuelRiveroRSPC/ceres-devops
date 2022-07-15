@@ -1,12 +1,8 @@
 ---
 name: GCPSetup
+
 on:
   workflow_call:
-    inputs:
-      image:
-        required: true
-        type: string
-
     secrets:
       account:
         required: true
