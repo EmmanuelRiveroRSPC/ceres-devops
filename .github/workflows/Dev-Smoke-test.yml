@@ -9,6 +9,12 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
+    uses: ./.github/workflows/GCPSetup.yml
+    with:
+      account: ${{ secrets.GCP_DEV_ACC }}
+      GCPCreds: ${{ secrets.GCP_DEV }} 
+
   build:
     runs-on: ubuntu-latest
 
@@ -18,9 +24,9 @@ jobs:
       - run: ls /home/runner/work/ceres-devops/ceres-devops/.github/workflows/
       - run: ls 
 
-      - uses: EmmanuelRiveroRSPC/ceres-devops/.github/workflows/GCPSetup.yml
+      - uses: ./.github/actions/GCPSetup
         with:
-          account: ${{ secrets.GCP_DEV_ACC }}
+          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
           GCPCreds: ${{ secrets.GCP_DEV }} 
 
       - uses: actions/setup-python@v4
