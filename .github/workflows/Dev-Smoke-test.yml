@@ -20,19 +20,10 @@ jobs:
           python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
-
-      - uses: 'google-github-actions/auth@v0'
+      - uses: ./.github/workflows/GCPSetup
         with:
-          credentials_json: '${{ secrets.GCP_DEV }}'
-
-      - name: K8s login
-        shell: bash
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
-          export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-          gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ secrets.GCP_DEV_ACC }}
+          account: ${{ secrets.GCP_DEV_ACC }}
+          GCPCreds: ${{ secrets.GCP_DEV }} 
 
       - name: Pod Test
         run: python test-scripts/k8sPodStatus.py -l ceres-new -s app.kubernetes.io/name
