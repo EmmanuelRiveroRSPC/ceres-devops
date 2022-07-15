@@ -9,6 +9,7 @@ jobs:
     runs-on:  ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/GCPSetup
         with:
           GCPaccount: ${{ secrets.GCP_DEV_ACC }}
