@@ -32,4 +32,4 @@ jobs:
 
       - name: Pod Test
 #        run: python test-scripts/k8sPodStatus.py -l ceres-new -s app.kubernetes.io/name
-        run: python test-scripts/k8sPodStatus.py -l ceres -s app.kubernetes.io/name -t 60 -i 2
+        run: python test-scripts/k8sPodStatus.py -l ceres-ceres-test-27631800-crhmx -s app -t 60 -i 2
