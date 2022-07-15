@@ -18,7 +18,7 @@ jobs:
       - run: ls /home/runner/work/ceres-devops/ceres-devops/.github/workflows/
       - run: ls 
 
-      - uses: ./.github/actions/GCPSetup
+      - uses: ./.github/actions/GCPSetup.yml
         with:
           account: ${{ secrets.GCP_DEV_ACC }}
           GCPCreds: ${{ secrets.GCP_DEV }} 
