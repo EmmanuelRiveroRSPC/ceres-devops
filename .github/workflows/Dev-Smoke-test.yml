@@ -31,4 +31,5 @@ jobs:
         run: gcloud container clusters get-credentials primary-cluster --zone us-east1-b --project ${{ secrets.GCP_DEV_ACC }}
 
       - name: Pod Test
-        run: python test-scripts/k8sPodStatus.py -l ceres-new -s app.kubernetes.io/name
+#        run: python test-scripts/k8sPodStatus.py -l ceres-new -s app.kubernetes.io/name
+        run: python test-scripts/k8sPodStatus.py -l ceres-new -s app.kubernetes.io/name -t 60 -i 2
