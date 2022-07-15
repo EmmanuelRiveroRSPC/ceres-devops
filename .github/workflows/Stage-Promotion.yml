@@ -95,4 +95,4 @@ jobs:
         run: helm show values helm-ceres/charts/ceres
 
 #      - name: Helm upgrade
-#        run: helm upgrade helm-ceres $HELM_CHART --set image.repository=${IMAGE_NAME}@sha256,image.tag=${{ needs.Setup.outputs.new_version }}      
+#        run: helm upgrade helm-ceres $HELM_CHART --set image.tag=${{ needs.Setup.outputs.new_version }}      
