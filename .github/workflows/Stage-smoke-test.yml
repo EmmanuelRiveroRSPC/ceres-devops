@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-    CLUSTER_NAME: primary-cluster
+    CLUSTER_NAME: primay-cluster
     SELECTOR: ceres
     LABEL: app.kubernetes.io/name
 
@@ -20,9 +20,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - run: ls /home/runner/work/ceres-devops/ceres-devops/.github/workflows/
-      - run: ls 
 
       - uses: ./.github/actions/GCPSetup
         with:

@@ -19,9 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: ls /home/runner/work/ceres-devops/ceres-devops/.github/workflows/
-      - run: ls 
-
       - uses: ./.github/actions/GCPSetup
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
