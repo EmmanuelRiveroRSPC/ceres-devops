@@ -17,11 +17,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: 'google-github-actions/setup-gcloud@v0'
-
     - uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ inputs.GCPCreds }}'
+
+    - uses: 'google-github-actions/setup-gcloud@v0'
 
     - shell: bash
       run: |

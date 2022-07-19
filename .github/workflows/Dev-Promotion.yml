@@ -21,7 +21,7 @@ jobs:
       image: testdevops
     secrets:
       account:  ${{ secrets.GCP_DEV_ACC }}
-      GCPCreds: ${{ secrets.GCP_DEV }} 
+      GCPCreds: ${{ secrets.GCP_SA_JSON }} 
 
   Build:
     needs: Setup
@@ -35,7 +35,7 @@ jobs:
           
       - uses: ./.github/actions/GCPSetup
         with:
-          GCPCreds: ${{ secrets.GCP_DEV }} 
+          GCPCreds: ${{ secrets.GCP_SA_JSON }} 
 
       - name: 'Maven settings'
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
@@ -94,9 +94,9 @@ jobs:
           
       - uses: ./.github/actions/GCPSetup
         with:
-          GCPCreds: ${{ secrets.GCP_DEV }} 
+          GCPCreds: ${{ secrets.GCP_SA_JSON }} 
           k8sSetup: "TRUE"
-          GCPaccount: ${{ secrets.GCP_STAGE_ACC }}
+          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
 
       - name: Checkout helm-repo
         uses: actions/checkout@v3
