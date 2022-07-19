@@ -4,6 +4,7 @@ name: Dev promotion
 env:
   IMAGE_NAME: ceres
   HELM_CHART: ceres
+  CLUSTER_NAME: primary-cluster
 
 on: 
   pull_request:
@@ -98,6 +99,7 @@ jobs:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
           k8sSetup: "TRUE"
           GCPaccount: ${{ secrets.GCP_DEV_ACC }}
+          ClusterName: $CLUSTER_NAME
 
       - name: Checkout helm-repo
         uses: actions/checkout@v3
