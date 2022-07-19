@@ -22,7 +22,7 @@ jobs:
 
       - uses: 'google-github-actions/auth@v0'
         with:
-          credentials_json: '${{ inputs.GCPCreds }}'
+          credentials_json: '${{ secrets.GCP_DEV }}'
 
       - name: 'Maven settings'
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
