@@ -85,7 +85,7 @@ jobs:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
           k8sSetup: "TRUE"
           GCPaccount: ${{ secrets.GCP_STAGE_ACC }}
-          ClusterName: $CLUSTER_NAME
+          clusterName: $CLUSTER_NAME
 
       - name: Checkout helm-repo
         uses: actions/checkout@v3

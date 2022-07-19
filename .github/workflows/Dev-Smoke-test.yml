@@ -25,7 +25,7 @@ jobs:
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
           k8sSetup: "TRUE"
-          ClusterName: $CLUSTER_NAME
+          clusterName: $CLUSTER_NAME
           GCPaccount: ${{ secretsGCP_DEV }}
 
       - uses: actions/setup-python@v4

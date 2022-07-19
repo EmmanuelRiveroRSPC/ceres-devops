@@ -13,7 +13,7 @@ inputs:
   GCPaccount:
     required: false
     description: GCP account only need if login into k8s
-  ClusterName:
+  clusterName:
     required: false
     description: Cluster name to login
 
@@ -31,7 +31,7 @@ runs:
         if [ "${{ inputs.k8sSetup }}" = "TRUE" ]; then
           gcloud components install gke-gcloud-auth-plugin
           export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-          gcloud container clusters get-credentials {{ inputs.ClusterName }} --zone us-east1-b --project ${{ inputs.GCPaccount }}
+          gcloud container clusters get-credentials ${{ inputs.clusterName }} --zone us-east1-b --project ${{ inputs.GCPaccount }}
         else
           echo "Skiping k8s setup"
         fi
