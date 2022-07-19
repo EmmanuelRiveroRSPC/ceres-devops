@@ -91,7 +91,8 @@ jobs:
 
     steps:
       ### Seting up runner env ###
-          
+      - uses: actions/checkout@v3
+      
       - uses: ./.github/actions/GCPSetup
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
