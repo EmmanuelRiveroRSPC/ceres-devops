@@ -3,16 +3,16 @@ name: GCPSetup
 description: 'Setup GCP environment'
 
 inputs:
-  GCPaccount:
-    required: true
-    description: GCP acount
   GCPCreds:
     required: true
     description: GCP credentials
   k8sSetup:
     required: false
     default: ""
-    description: "install or not k8s credentials, with TRUE Sas string"
+    description: "install or not k8s credentials, with TRUE as string"
+  GCPaccount:
+    required: false
+    description: GCP account only need if login into k8s
 
 runs:
   using: "composite"

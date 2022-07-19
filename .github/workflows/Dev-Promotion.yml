@@ -32,14 +32,9 @@ jobs:
     steps:
     ### Seting up runner env ###
       - uses: actions/checkout@v3
-
-      - uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: '${{ secrets.GCP_DEV }}'
           
       - uses: ./.github/actions/GCPSetup
         with:
-          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
           GCPCreds: ${{ secrets.GCP_DEV }} 
 
       - name: 'Maven settings'
@@ -96,14 +91,12 @@ jobs:
 
     steps:
       ### Seting up runner env ###
-      - uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: '${{ secrets.GCP_DEV }}'
           
       - uses: ./.github/actions/GCPSetup
         with:
-          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
           GCPCreds: ${{ secrets.GCP_DEV }} 
+          k8sSetup: "TRUE"
+          GCPaccount: ${{ secrets.GCP_STAGE_ACC }}
 
       - name: Checkout helm-repo
         uses: actions/checkout@v3

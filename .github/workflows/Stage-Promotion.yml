@@ -30,15 +30,9 @@ jobs:
       ### Seting up runner env ###
       - uses: actions/checkout@v3
       
-      - uses: 'google-github-actions/auth@v0'
+      - uses: ./.github/actions/GCPSetup
         with:
-          credentials_json: '${{ secrets.GCP_DEV }}'
-
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
-
-      - name: 'Set up Jfrog CLI'
-        uses: jfrog/setup-jfrog-cli@v2
+          GCPCreds: ${{ secrets.GCP_DEV }} 
 
       - name: 'Maven settings'
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
@@ -83,6 +77,12 @@ jobs:
     needs: [promotion]
 
     steps:
+      - uses: ./.github/actions/GCPSetup
+        with:
+          GCPCreds: ${{ secrets.GCP_DEV }} 
+          k8sSetup: "TRUE"
+          GCPaccount: ${{ secrets.GCP_STAGE_ACC }}
+
       - name: Checkout helm-repo
         uses: actions/checkout@v3
         with:
@@ -91,6 +91,9 @@ jobs:
           path: helm-ceres
           token: ${{ secrets.GIT_TOKEN }}
       
+      - name: test k8s
+        run: kubectl get pods
+
       - name: test helm
         run: helm show values helm-ceres/charts/ceres
 
