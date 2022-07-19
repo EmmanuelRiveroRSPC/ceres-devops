@@ -3,13 +3,13 @@ name: Dev smoke test
 
 on:
   workflow_run:
-    workflows: ["Dev-Promotion"]
+    workflows: ["Dev promotion"]
     types:
       - completed
   workflow_dispatch:
 
 jobs:
-  build:
+  K8s:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
 
       - uses: ./.github/actions/GCPSetup
         with:
-          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
+          GCPaccount: ${{ secrets.GCP_SA_JSON }}
           GCPCreds: ${{ secrets.GCP_DEV }} 
           k8sSetup: "TRUE"
 
