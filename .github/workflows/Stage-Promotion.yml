@@ -18,7 +18,7 @@ jobs:
     with:
       image: testdevops
     secrets:
-      account:  ${{ secrets.GCP_STAGE_ACC }}
+      account:  ${{ secrets.GCP_DEV_ACC }}
       GCPCreds: ${{ secrets.GCP_SA_JSON }} 
 
   promotion:
