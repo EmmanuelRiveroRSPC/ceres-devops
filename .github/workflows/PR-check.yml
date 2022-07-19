@@ -22,7 +22,7 @@ jobs:
 
       - uses: 'google-github-actions/auth@v0'
         with:
-          credentials_json: '${{ secrets.GCP_DEV }}'
+          credentials_json: '${{ secrets.GCP_SA_JSON }}'
       - run: cat /home/runner/work/ceres-devops/ceres-devops/gha*
       - name: 'Maven settings'
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
