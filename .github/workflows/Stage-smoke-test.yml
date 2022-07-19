@@ -1,17 +1,19 @@
 ---
-name: Dev smoke test
+name: Stage smoke test
 
 on:
   workflow_run:
-    workflows: ["Dev promotion"]
+    workflows: ["Stage promotion"]
     types:
       - completed
   workflow_dispatch:
 
 env:
     CLUSTER_NAME: primary-cluster
-    SELECTOR: ceres-new
+    SELECTOR: ceres
     LABEL: app.kubernetes.io/name
+
+
 jobs:
   K8s:
     runs-on: ubuntu-latest
@@ -27,7 +29,7 @@ jobs:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
           k8sSetup: "TRUE"
           clusterName: $CLUSTER_NAME
-          GCPaccount: ${{ secretsGCP_DEV }}
+          GCPaccount: ${{ secrets.GCP_STAGE_ACC }}
 
       - uses: actions/setup-python@v4
         with:
@@ -36,4 +38,3 @@ jobs:
 
       - name: Pod Test
         run: python test-scripts/k8sPodStatus.py -l $SELECTOR -s $LABEL
-
