@@ -1,5 +1,5 @@
 ---
-name: Stage-promotion
+name: Stage promotion
 
 env:
   IMAGE_NAME: ceres

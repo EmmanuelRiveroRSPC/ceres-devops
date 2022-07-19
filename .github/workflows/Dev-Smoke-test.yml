@@ -1,5 +1,5 @@
 ---
-name: Dev-Smoke-test
+name: Dev smoke test
 
 on:
   workflow_run:

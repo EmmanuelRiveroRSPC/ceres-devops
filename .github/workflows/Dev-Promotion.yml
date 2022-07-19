@@ -1,5 +1,5 @@
 ---
-name: Dev-Promotion
+name: Dev promotion
 
 env:
   IMAGE_NAME: ceres
