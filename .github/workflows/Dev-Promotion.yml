@@ -4,7 +4,9 @@ name: Dev promotion
 env:
   IMAGE_NAME: ceres
   HELM_CHART: ceres
+  HELM_CHART_FOLDER: helm-ceres/cherts/ceres
   CLUSTER_NAME: primary-cluster
+
 
 on: 
   pull_request:
@@ -73,18 +75,8 @@ jobs:
       
       - run: ls ./target
 
-  #    - name: Image build
-  #      run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest --build-arg ARTIFACT_VERSION=${{ env.ARTIFACT_VERSION }} .
-
-      ### Image build and push
-      - name: Image build
-        run: docker build -t gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest --build-arg ARTIFACT_VERSION=${{ env.ARTIFACT_VERSION }} .
-
-  #    - name: Image push
-  #      run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest
-
-      - name: Image push
-        run: docker push gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest
+      - name: Build with jib
+        run: mvn compile jib:build -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }}      
 
   Deploy:
     runs-on: ubuntu-latest
@@ -126,4 +118,4 @@ jobs:
         run: echo ${{ env.DIGEST }} 
     
 #      - name: Helm upgrade
-#        run: helm upgrade helm-ceres $HELM_CHART --set image.repository=${IMAGE_NAME}@sha256,image.tag=${{ env.DIGEST }}
+#        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=${IMAGE_NAME}@sha256,image.tag=${{ env.DIGEST }}
