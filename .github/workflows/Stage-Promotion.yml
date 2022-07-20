@@ -4,7 +4,7 @@ name: Stage promotion
 env:
   IMAGE_NAME: ceres-test
   HELM_CHART: ceres
-  HELM_CHART_FOLDER: helm-ceres/cherts/ceres
+  HELM_CHART_FOLDER: helm-ceres/charts/ceres
   CLUSTER_NAME: primay-cluster
   ARTIFACT_ID: ceres-test
   GROUP_ID: com.rackspace.ceres
