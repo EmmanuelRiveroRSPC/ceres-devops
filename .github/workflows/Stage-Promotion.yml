@@ -6,6 +6,8 @@ env:
   HELM_CHART: ceres
   HELM_CHART_FOLDER: helm-ceres/cherts/ceres
   CLUSTER_NAME: primay-cluster
+  ARTIFACT_ID: ceres-test
+  GROUP_ID: com.rackspace.ceres
 
 # Only trigger, when the build workflow succeeded
 on:
@@ -62,18 +64,17 @@ jobs:
         shell: bash
         run: |
           mvn org.apache.maven.plugins:maven-dependency-plugin:2.10:get -DremoteRepositories=https://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-snapshot-local/ \
-                            -DgroupId=com.rackspace.ceres \
-                            -DartifactId=ceres \
-                            -Dversion=0.0.1-SNAPSHOT \
+                            -DgroupId=$GROUP_ID \
+                            -DartifactId=$ARTIFACT_ID \
+                            -Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
                             -Dtransitive=false \
-                            -Ddest=./ceres-${{ needs.Setup.outputs.new_version }}.jar
+                            -Ddest=./$ARTIFACT_ID-${{ needs.Setup.outputs.new_version }}.jar
           
-          # mvn deploy:deploy-file -Dfile=${{ needs.Setup.outputs.new_version }}.jar -DrepositoryId=salus-dev-releaselibs-release -DartifactId=ceres -DartifactId=com.rackspace.ceres
-        
+          mvn -s ./.mvn/settings.xml deploy:deploy-file -Dfile=$ARTIFACT_ID-${{ needs.Setup.outputs.new_version }}.jar -DartifactId=$ARTIFACT_ID -DgroupId=$GROUP_ID -Dversion=${{ needs.Setup.outputs.new_version }} -DrepositoryId=salus-dev-release -Durl=http://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-release-local 
+
       - name: test
         run: |
-          ls
-          md5sum ceres-${{ needs.Setup.outputs.new_version }}.jar
+          md5sum $ARTIFACT_ID-${{ needs.Setup.outputs.new_version }}.jar
 
   Stage-Deploy:
     runs-on: ubuntu-latest
