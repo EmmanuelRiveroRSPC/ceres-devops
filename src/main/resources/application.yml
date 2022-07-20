@@ -39,3 +39,4 @@ logging:
     root: INFO
   pattern:
     level: "%5p %mdc"
+test-var: test
