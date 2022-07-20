@@ -23,8 +23,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.rackspace.ceres</groupId>
+
 	<artifactId>ceres-test</artifactId>
 	<version>1.0.8</version>
+
 	<description>TSDB backed by Cassandra</description>
 
 	<properties>
