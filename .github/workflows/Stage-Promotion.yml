@@ -72,7 +72,7 @@ jobs:
           
           mvn -s ./.mvn/settings.xml deploy:deploy-file -Dfile=$ARTIFACT_ID-${{ needs.Setup.outputs.new_version }}.jar -DartifactId=$ARTIFACT_ID -DgroupId=$GROUP_ID -Dversion=${{ needs.Setup.outputs.new_version }} -DrepositoryId=salus-dev-release -Durl=http://salus-artifactory.dev.monplat.rackspace.net/artifactory/libs-release-local 
 
-      - name: test
+      - name: md5 checksum
         run: |
           md5sum $ARTIFACT_ID-${{ needs.Setup.outputs.new_version }}.jar
 
