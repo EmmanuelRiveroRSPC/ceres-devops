@@ -34,7 +34,9 @@ jobs:
 
       ### Seting up runner env ###
       - uses: actions/checkout@v3
-      
+        with:
+          token: ${{ secrets.GIT_TOKEN }}
+          
       - uses: ./.github/actions/GCPSetup
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
@@ -47,7 +49,7 @@ jobs:
 
       #Promoting image & artifact
       - name: 'Image promotion'
-        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/testdevops:${{ needs.Setup.outputs.new_version }}
+        run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:${{ needs.Setup.outputs.new_version }}
 
       - name: 'POM promotion'
         shell: bash
