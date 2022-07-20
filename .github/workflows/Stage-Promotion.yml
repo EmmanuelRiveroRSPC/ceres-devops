@@ -34,7 +34,9 @@ jobs:
 
       ### Seting up runner env ###
       - uses: actions/checkout@v3
-      
+        with:
+          token: ${{ secrets.GIT_TOKEN }}
+          
       - uses: ./.github/actions/GCPSetup
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
@@ -53,7 +55,7 @@ jobs:
         shell: bash
         run: |
           mvn versions:set -DnewVersion=${{ needs.Setup.outputs.new_version }}
-          git config --global user.email "mmi-automation@rackspace.com"
+          git config --global user.email "emmanuel.rivero@rackspace.com"
           git config --global user.name "mmi-automation"
           git add ./pom.xml
           git commit -m "${{github.workflow }}: ${{ github.run_number }} - POM.xml update new version: ${{ needs.Setup.outputs.new_version }}" || true
