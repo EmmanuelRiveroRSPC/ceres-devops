@@ -23,8 +23,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.rackspace.ceres</groupId>
-	<artifactId>ceres</artifactId>
-	<version>0.0.8</version>
+
+	<artifactId>ceres-test</artifactId>
+	<version>1.0.8</version>
+
 	<description>TSDB backed by Cassandra</description>
 
 	<properties>
@@ -171,7 +173,7 @@
 						<image>openjdk:14</image>
 					</from>
 					<to>
-            <image>${docker.image.prefix}/testdevops</image>
+            <image>${docker.image.prefix}/${project.artifactId}</image>
 					</to>
 				</configuration>
 			</plugin>
