@@ -98,15 +98,6 @@ jobs:
           ref: pre-prod
           path: helm-ceres
           token: ${{ secrets.GIT_TOKEN }}
-      
-      - name: test k8s
-        run: kubectl get pods
-
-      - name: test helm
-        run: helm show values helm-ceres/charts/ceres
-
-      - name: test helm
-        run: helm list
 
 #      - name: Helm upgrade
 #        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.tag=${{ needs.Setup.outputs.new_version }}    
