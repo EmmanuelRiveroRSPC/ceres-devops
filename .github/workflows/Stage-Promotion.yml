@@ -112,4 +112,4 @@ jobs:
 #        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.tag=${{ needs.Setup.outputs.new_version }}    
 
       - name: Helm upgrade
-        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=ceres-test,image.tag=${{ needs.Setup.outputs.new_version }}     
+        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=gcr.io/${{ secrets.GCP_DEV_ACC }}/ceres-test,image.tag=${{ needs.Setup.outputs.new_version }}     
