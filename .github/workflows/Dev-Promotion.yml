@@ -61,17 +61,17 @@ jobs:
           echo "ARTIFACT_VERSION=${{ needs.Setup.outputs.new_version }}-SNAPSHOT" >> $GITHUB_ENV 
 
       ### Maven build
-  #    - name: Build with Maven
-  #      shell: bash
-  #      run: |
-  #        mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_VERSION }} versions:commit
-  #        mvn -B deploy -s .mvn/settings.xml
-
       - name: Build with Maven
         shell: bash
         run: |
           mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_VERSION }} versions:commit
-          mvn -B verify -s .mvn/settings.xml
+          mvn -B deploy -s .mvn/settings.xml
+
+      # - name: Build with Maven
+      #   shell: bash
+      #   run: |
+      #     mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_VERSION }} versions:commit
+      #     mvn -B verify -s .mvn/settings.xml
       
       - run: ls ./target
 
