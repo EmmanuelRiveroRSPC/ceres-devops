@@ -61,7 +61,6 @@ jobs:
           git commit -m "${{github.workflow }}: ${{ github.run_number }} - POM.xml update new version: ${{ needs.Setup.outputs.new_version }}" || true
           git push origin master || true
 
-      ### -Dversion=${{ needs.Setup.outputs.new_version }}-SNAPSHOT \
       - name: 'Artifact promotion'
         shell: bash
         run: |
@@ -106,5 +105,11 @@ jobs:
       - name: test helm
         run: helm show values helm-ceres/charts/ceres
 
+      - name: test helm
+        run: helm list
+
 #      - name: Helm upgrade
-#        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.tag=${{ needs.Setup.outputs.new_version }}      
+#        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.tag=${{ needs.Setup.outputs.new_version }}    
+
+#      - name: Helm upgrade
+#        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=ceres-test,image.tag=${{ needs.Setup.outputs.new_version }}     
