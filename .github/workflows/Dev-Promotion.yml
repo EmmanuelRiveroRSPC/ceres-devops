@@ -2,7 +2,7 @@
 name: Dev promotion
 
 env:
-  IMAGE_NAME: ceres
+  IMAGE_NAME: ceres-test
   HELM_CHART: ceres
   HELM_CHART_FOLDER: helm-ceres/cherts/ceres
   CLUSTER_NAME: primary-cluster
@@ -21,7 +21,7 @@ jobs:
   Setup:
     uses: ./.github/workflows/getVersion.yml
     with:
-      image: testdevops
+      image: ceres-test
     secrets:
       account:  ${{ secrets.GCP_DEV_ACC }}
       GCPCreds: ${{ secrets.GCP_SA_JSON }} 
