@@ -39,5 +39,5 @@ logging:
     root: INFO
   pattern:
     level: "%5p %mdc"
-test-var: test-var
+test-var: test-var112233
 testing-var: test-asdas111222
