@@ -70,7 +70,7 @@ if totalTries <= 0:
     print ("timeout must be equal or higher that interval")
     exit(1)
 
-print (f"Will try a total of {totalTries} times, each {interval} secounds")
+print (f"Will try a total of {totalTries} times, each {interval} seconds")
 allReady = False
 for tryIt in range(totalTries):
     print (f"Try {tryIt + 1}/{totalTries}:")
