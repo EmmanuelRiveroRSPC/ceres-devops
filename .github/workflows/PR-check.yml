@@ -42,9 +42,6 @@ jobs:
           java-version: '14'
           distribution: 'adopt-hotspot'
 
-      - name: test mvn settings
-        run: mvn -X
-
       - name: Build with Maven
         shell: bash
         run: |

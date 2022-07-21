@@ -44,9 +44,6 @@ jobs:
           path: |
             ~/.m2
 
-      - name: test mvn settings
-        run: mvn -X
-
       - uses: actions/setup-python@v4
         with:
           python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
