@@ -40,4 +40,4 @@ logging:
   pattern:
     level: "%5p %mdc"
 test-var: test-var
-testing-var: test
+testing-var: test-asd-a
