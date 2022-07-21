@@ -43,7 +43,7 @@ jobs:
           distribution: 'adopt-hotspot'
 
       - name: test mvn settings
-        run: mvn -x
+        run: mvn -X
 
       - name: Build with Maven
         shell: bash
