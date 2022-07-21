@@ -26,11 +26,12 @@ jobs:
           path: |
             ~/.m2
 
-      - name: test
+      - name: test directory
         run: |
+          pwd
           ls -la
           ls ~/.m2
-          sl ./.m2
+          ls ./.m2
 
       - uses: ./.github/actions/GCPSetup
         with:
@@ -48,10 +49,24 @@ jobs:
           java-version: '14'
           distribution: 'adopt-hotspot'
 
+      - name: test directory
+        run: |
+          pwd
+          ls -la
+          ls ~/.m2
+          ls ./.m2
+
       - name: Build with Maven
         shell: bash
         run: |
           mvn -B verify -s .mvn/settings.xml 
+
+      - name: test directory
+        run: |
+          pwd
+          ls -la
+          ls ~/.m2
+          ls ./.m2
 
       - name: Build with jib
         run: mvn compile jib:build -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }}      
