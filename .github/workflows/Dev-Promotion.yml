@@ -54,7 +54,7 @@ jobs:
         run: gcloud auth configure-docker gcr.io -q
 
       - name: .m2 forder [*** fix it please ***]
-        run: sed -i 's*/root/.m2/*./.m2/*g' ./.mvn/settings.xml
+        run: sed -i 's*/root/.m2/*~/.m2/*g' ./.mvn/settings.xml
 
       - name: Set up JDK
         uses: actions/setup-java@v3

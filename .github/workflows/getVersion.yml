@@ -44,8 +44,8 @@ jobs:
           path: |
             ~/.m2
 
-      - name: test
-        run: ls -la ~
+      - name: test mvn settings
+        run: mvn -x
 
       - uses: actions/setup-python@v4
         with:

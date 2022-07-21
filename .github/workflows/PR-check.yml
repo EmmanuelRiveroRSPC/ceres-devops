@@ -26,13 +26,6 @@ jobs:
           path: |
             ~/.m2
 
-      - name: test directory
-        run: |
-          pwd
-          ls -la
-          ls ~/.m2
-          ls ./.m2
-
       - uses: ./.github/actions/GCPSetup
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
@@ -41,7 +34,7 @@ jobs:
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
 
       - name: .m2 forder [*** fix it please ***]
-        run: sed -i 's*/root/.m2/*./.m2/*g' ./.mvn/settings.xml
+        run: sed -i 's*/root/.m2/*~/.m2/*g' ./.mvn/settings.xml
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -49,24 +42,15 @@ jobs:
           java-version: '14'
           distribution: 'adopt-hotspot'
 
-      - name: test directory
-        run: |
-          pwd
-          ls -la
-          ls ~/.m2
-          ls ./.m2
+      - name: test mvn settings
+        run: mvn -x
 
       - name: Build with Maven
         shell: bash
         run: |
           mvn -B verify -s .mvn/settings.xml 
 
-      - name: test directory
-        run: |
-          pwd
-          ls -la
-          ls ~/.m2
-          ls ./.m2
+
 
       - name: Build with jib
         run: mvn compile jib:build -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }}      
