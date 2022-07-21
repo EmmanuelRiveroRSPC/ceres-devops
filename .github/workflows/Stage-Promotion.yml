@@ -8,6 +8,7 @@ env:
   CLUSTER_NAME: primay-cluster
   ARTIFACT_ID: ceres-test
   GROUP_ID: com.rackspace.ceres
+  CACHE_KEY: mvn-dependencies
 
 # Only trigger, when the build workflow succeeded
 on:
@@ -36,7 +37,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GIT_TOKEN }}
-          
+
+      - name: Maven Cache 
+        uses: actions/cache@v3
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: |
+            ~/.m2
+
       - uses: ./.github/actions/GCPSetup
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 

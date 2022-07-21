@@ -2,7 +2,7 @@
 name: getVersion
 
 env:
-    CACHE_KEY: mvn-dependencies
+  CACHE_KEY: mvn-dependencies
 
 on:
   workflow_call:
@@ -37,10 +37,10 @@ jobs:
       # Setting runner environment
       - uses: actions/checkout@v3
 
-      - name: Cache Gradle packages
+      - name: Maven Cache 
         uses: actions/cache@v3
         with:
-          key: $CACHE_KEY
+          key: ${{ env.CACHE_KEY }}
           path: |
             ~/.m2
 
