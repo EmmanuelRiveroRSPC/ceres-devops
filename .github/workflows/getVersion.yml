@@ -1,6 +1,9 @@
 ---
 name: getVersion
 
+env:
+    CACHE_KEY: mvn-dependencies
+
 on:
   workflow_call:
     inputs:
@@ -33,6 +36,16 @@ jobs:
     steps:
       # Setting runner environment
       - uses: actions/checkout@v3
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          key: $CACHE_KEY
+          path: |
+            ~/.m2
+
+      - name: test
+        run: ls -la ~
 
       - uses: actions/setup-python@v4
         with:

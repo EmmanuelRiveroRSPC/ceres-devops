@@ -6,7 +6,7 @@ env:
   HELM_CHART: ceres
   HELM_CHART_FOLDER: helm-ceres/cherts/ceres
   CLUSTER_NAME: primary-cluster
-
+  CACHE_KEY: mvn-dependencies
 
 on: 
   pull_request:
@@ -35,7 +35,14 @@ jobs:
     steps:
     ### Seting up runner env ###
       - uses: actions/checkout@v3
-          
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          key: $CACHE_KEY
+          path: |
+            ~/.m2
+
       - uses: ./.github/actions/GCPSetup
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 

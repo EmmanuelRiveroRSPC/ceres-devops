@@ -9,6 +9,7 @@ on:
 
 env:
   ARTIFACT_VERSION: dummy-verison 
+  CACHE_KEY: mvn-dependencies
 
 jobs:
   build:
@@ -17,6 +18,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          key: $CACHE_KEY
+          path: |
+            ~/.m2
 
       - uses: ./.github/actions/GCPSetup
         with:
