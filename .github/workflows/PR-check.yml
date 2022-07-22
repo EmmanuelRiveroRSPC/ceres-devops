@@ -50,4 +50,4 @@ jobs:
 
 
       - name: Build with jib
-        run: mvn compile jib:build -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }}      
+        run: mvn compile jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummyContainer      
