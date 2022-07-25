@@ -9,7 +9,7 @@ on:
 
 env:
   ARTIFACT_VERSION: dummy-verison 
-  CACHE_KEY: mvn-dependencies
+  CACHE_KEY: mvn-${{ github.workflow }}
 
 jobs:
   build:

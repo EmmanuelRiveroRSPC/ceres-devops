@@ -8,7 +8,7 @@ env:
   CLUSTER_NAME: primay-cluster
   ARTIFACT_ID: ceres-test
   GROUP_ID: com.rackspace.ceres
-  CACHE_KEY: mvn-dependencies
+  CACHE_KEY: mvn-${{ github.workflow }}
 
 # Only trigger, when the build workflow succeeded
 on:

@@ -2,7 +2,7 @@
 name: getVersion
 
 env:
-  CACHE_KEY: mvn-dependencies
+  CACHE_KEY: mvn-${{ github.workflow }}
 
 on:
   workflow_call:
