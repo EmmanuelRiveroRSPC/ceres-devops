@@ -1,9 +1,6 @@
 ---
 name: getVersion
 
-env:
-  CACHE_KEY: mvn-${{ github.workflow }}
-
 on:
   workflow_call:
     inputs:
@@ -36,13 +33,6 @@ jobs:
     steps:
       # Setting runner environment
       - uses: actions/checkout@v3
-
-      - name: Maven Cache 
-        uses: actions/cache@v3
-        with:
-          key: ${{ env.CACHE_KEY }}
-          path: |
-            ~/.m2
 
       - uses: actions/setup-python@v4
         with:
