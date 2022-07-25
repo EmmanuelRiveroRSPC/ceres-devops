@@ -50,4 +50,4 @@ jobs:
 
 
       - name: Build with jib
-        run: mvn compile jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummyContainer      
+        run: mvn compile jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummy    
