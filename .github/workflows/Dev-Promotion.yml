@@ -41,7 +41,7 @@ jobs:
         with:
           key: ${{ env.CACHE_KEY }}
           path: |
-            ~/.m2/repostory
+            ~/.m2/repository
 
       - uses: ./.github/actions/GCPSetup
         with:
