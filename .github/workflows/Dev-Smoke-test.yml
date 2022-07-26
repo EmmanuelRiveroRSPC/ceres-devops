@@ -34,3 +34,17 @@ jobs:
       - name: Pod Test
         run: python test-scripts/k8sPodStatus.py -l $SELECTOR -s $LABEL
 
+  Readiness:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: python ./test-scripts/runTest.py -l ./test-scripts/test-plan.yml
+
+  Smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3      
+

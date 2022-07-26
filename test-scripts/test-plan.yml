@@ -1,0 +1,6 @@
+Readiness:
+  -test1
+
+Smoke-test:
+  -test2
+
