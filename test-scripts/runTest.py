@@ -4,7 +4,7 @@ import argparse
 parser=argparse.ArgumentParser()
 
 parser.add_argument('-l', '--list', help='Test list file path', default="." )
-parser.add_argument('-t', '--test_set', help='Test set to be run', Required=True)
+parser.add_argument('-t', '--test_set', help='Test set to be run', required=True)
 
 args=parser.parse_args()
 
