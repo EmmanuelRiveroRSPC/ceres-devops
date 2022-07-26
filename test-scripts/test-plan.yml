@@ -6,12 +6,12 @@ Readiness:
 Smoke-test:
   - name: e2e
     type: java
-    argLine: "-Djavaarg blalala"
+    argsLine: "-Djavaarg blalala"
 
   - name: e2e2
     type: java
-    argLine: "-Djavaarg blalala"
+    argsLine: "-Djavaarg blalala"
 
   - name: e2e3
     type: java
-    argLine: "-Djavaarg blalala"
+    argsLine: "-Djavaarg blalala"

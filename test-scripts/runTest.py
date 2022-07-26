@@ -30,10 +30,10 @@ with open(listPath) as file:
 
 for test in alltestSet[testSet]:
     if test["type"] == "python":
-        runPython(testName=test["name"], arguments=test["argLine"])
+        runPython(testName=test["name"], arguments=test["argsLine"])
 
     if test["type"] == "java":
-        print("tyolo")
+        runJava(testName=test["name"], arguments=test["argsLine"])
     
     if test["type"] not in suportedTypes:
         print ("Type: {} not suported for test: {}".format(test["type"], test["name"]))
