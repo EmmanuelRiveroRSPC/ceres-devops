@@ -11,10 +11,10 @@ args=parser.parse_args()
 listPath = args.list
 testSet = args.test_set
 
-
+testSet = {}
 with open(listPath) as file:
     # The FullLoader parameter handles the conversion from YAML
     # scalar values to Python the dictionary format
     testSet = yaml.load(file, Loader=yaml.FullLoader)
 
-    print(testSet)
+print (testSet)

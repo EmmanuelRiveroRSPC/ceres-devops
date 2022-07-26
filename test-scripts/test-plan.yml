@@ -1,6 +1,20 @@
 Readiness:
-  -test1
+  - name: test1
+    type: python
+    args:
+      - -t: time
+      - -s: lalala
 
 Smoke-test:
-  -test2
-
+  - name: e2e
+    type: java
+    args: 
+      - Djavaarg: blalba 
+  - name: e2e2
+    type: java
+    args: 
+      - Djavaarg: blalba 
+  - name: e2e3
+    type: java
+    args: 
+      - Djavaarg: blalba 
