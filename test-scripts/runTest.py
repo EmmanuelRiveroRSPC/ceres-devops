@@ -50,11 +50,10 @@ def removeLastSlash(string):
 
 #Check if the file exist in local, if not downlod it from artifactory 
 def fileCheck(localFile, fileName, type):
-    url = removeLastSlash(Artifactory.url)
-
     if not os.path.isfile(localFile):
         print ("File not in local path...")
         if not Artifactory.skip:
+            url = removeLastSlash(Artifactory.url)
             print ("Downloading from Artifactory")
             ArtifactoryURL = url + "/" + Artifactory.repository + "/" + type + "/" + fileName
             response = requests.get(ArtifactoryURL)
