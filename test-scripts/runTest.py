@@ -4,16 +4,16 @@ import argparse
 import subprocess
 import os
 
-def runPython(testName, arguments):
+def runPython(testName, arguments, testDirectory):
     cmd = ["python", testName]
-    localPath = f"./test-scripts/{testName}"
+    localPath = f"{testDirectory}/{testName}"
     if not os.path.isfile(localPath):
         print ("not in local")
     
 
     argumentsList = arguments.split()
     cmd.extend(argumentsList)
-    Process= subprocess.run(cmd, stdout=subprocess.PIPE)
+    Process = subprocess.run(cmd, stdout=subprocess.PIPE)
     podsText = Process.stdout.decode('utf-8')
     print (Process.args)
     print (podsText)
@@ -30,8 +30,9 @@ suportedTypes = ['python', 'java']
 
 parser=argparse.ArgumentParser()
 
-parser.add_argument('-l', '--list', help='Test list file path', default="." )
+parser.add_argument('-l', '--list', help='Test list file path', default="./test-plan.yml" )
 parser.add_argument('-t', '--test_set', help='Test set to be run', required=True)
+parser.add_argument('-d', '--test_directory', help='local test directory', default=".")
 
 args=parser.parse_args()
 
