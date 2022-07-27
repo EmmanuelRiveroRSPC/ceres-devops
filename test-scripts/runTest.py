@@ -3,6 +3,7 @@ import yaml
 import argparse
 import subprocess
 import os
+import requests
 
 #Coloritos!!!!
 class bcolors:
@@ -26,26 +27,44 @@ def runProcess(cmd):
     else:
         return False
 
-def runTest(testName, arguments, testDirectory, testType):
-    localPath = f"{testDirectory}/{testName}.py"
+def removeLastSlash(string):
+    length = len(string)
+    if str[length -1] == "/":
+        return str[:-1]
+    else:
+        return string
 
-    if not os.path.isfile(localPath):
+def fileCheck(localFile, fileName, type):
+    url = removeLastSlash(Artifactory.url)
+
+    if not os.path.isfile(localFile):
         print ("not in local")
+        if not Artifactory.skip:
+            ArtifactoryURL = url + "/" + Artifactory.repository + "/" + type + "/" + fileName
+            response = requests.get(ArtifactoryURL)
+            open(localFile, "wb").write(response.content)
 
+def runTest(testName, arguments, testDirectory, testType):
+    fileName = ""
     cmd = []
     if testType == "python":
         cmd = ["python"]
+        fileName = testName + ".py"
     if testType == "java":
         cmd = ["java", "-jar"]
+        fileName = testName + ".jar"
 
-    if testType not in suportedTypes.suppoerted:
+    if testType not in suportedTypes.supported:
         print ("Type: {} not suported for test: {}".format(testType,testName))
         print ("Suported types:")
-        for appType in suportedTypes.suppoerted:
+        for appType in suportedTypes.supported:
             print (f"  {appType}")
         exit(1)
 
-    cmd.append(localPath)
+    localFile = f"{testDirectory}/{fileName}"
+
+
+    cmd.append(localFile)
     
     argumentsList = arguments.split()
     cmd.extend(argumentsList)
@@ -62,7 +81,7 @@ class Artifactory:
     skip = True
 
 class suportedTypes:
-    suppoerted =  ['python', 'java']
+    supported = ['python', 'java']
 
 def main():
     parser=argparse.ArgumentParser()
