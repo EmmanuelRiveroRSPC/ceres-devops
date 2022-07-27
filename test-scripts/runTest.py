@@ -1,3 +1,9 @@
+# test run script
+# Will run a test set in test-plan yaml file
+# Will try to load test scripts from local, other wise will try to download from artifactory
+# Each test in the test set must have a name, type(python, java...), and argLine(arguments)
+# Artifactory url and repository must be specified in the test-plan yaml
+
 from genericpath import isfile
 from syslog import LOG_INFO
 import yaml
@@ -42,11 +48,12 @@ def removeLastSlash(string):
     else:
         return string
 
+#Check if the file exist in local, if not downlod it from artifactory 
 def fileCheck(localFile, fileName, type):
     url = removeLastSlash(Artifactory.url)
 
     if not os.path.isfile(localFile):
-        print ("file not in local")
+        print ("File not in local path...")
         if not Artifactory.skip:
             print ("Downloading from Artifactory")
             ArtifactoryURL = url + "/" + Artifactory.repository + "/" + type + "/" + fileName
@@ -64,15 +71,18 @@ def fileCheck(localFile, fileName, type):
 def runTest(testName, arguments, testDirectory, testType):
     fileName = ""
     cmd = []
-    if testType == "python":
+    if testType == "python" or testType == "py":
         cmd = ["python"]
         fileName = testName + ".py"
-    if testType == "java":
+    if testType == "java" or testType =="jar":
         cmd = ["java", "-jar"]
         fileName = testName + ".jar"
+    if testType == "ruby" or testType == "rb":
+        cmd = ["java", "-jar"]
+        fileName = testName + ".rb"
 
     if testType not in suportedTypes.supported:
-        print ("Type: {} not suported for test: {}".format(testType,testName))
+        print ("{}: {} type not suported for test".format(testName, testType))
         print ("Suported types:")
         for appType in suportedTypes.supported:
             print (f"  {appType}")
@@ -100,7 +110,7 @@ class Artifactory:
     skip = True
 
 class suportedTypes:
-    supported = ['python', 'java']
+    supported = ['python', 'java', 'ruby', 'py', 'jar', 'rb']
 
 def main():
     parser=argparse.ArgumentParser()
@@ -132,7 +142,7 @@ def main():
         SummaryList.append(runTest(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory, testType=test["type"]))
     
     outcome = []
-    print ("All test complete")
+    print ("Test run completed")
     print (bcolors.HEADER + bcolors.BOLD + "Summary:" + bcolors.RESETALL)
 
     for test in SummaryList:
