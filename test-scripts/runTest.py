@@ -5,11 +5,13 @@ import subprocess
 import os
 
 def runPython(testName, arguments, testDirectory):
-    cmd = ["python", testName]
-    localPath = f"{testDirectory}/{testName}"
+    localPath = f"{testDirectory}/{testName}.py"
+
     if not os.path.isfile(localPath):
         print ("not in local")
-    
+
+    cmd = ["python", localPath]
+
     argumentsList = arguments.split()
     cmd.extend(argumentsList)
     Process = subprocess.run(cmd, stdout=subprocess.PIPE)
