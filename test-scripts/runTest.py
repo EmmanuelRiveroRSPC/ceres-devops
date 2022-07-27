@@ -1,14 +1,22 @@
+from genericpath import isfile
 import yaml
 import argparse
 import subprocess
+import os
 
 def runPython(testName, arguments):
     cmd = ["python", testName]
+    localPath = f"./test-scripts/{testName}"
+    if not os.path.isfile(localPath):
+        print ("not in local")
+    
 
     argumentsList = arguments.split()
     cmd.extend(argumentsList)
-
-    print (cmd)
+    Process= subprocess.run(cmd, stdout=subprocess.PIPE)
+    podsText = Process.stdout.decode('utf-8')
+    print (Process.args)
+    print (podsText)
 
 def runJava(testName, arguments):
     cmd = ["java", "-jar", testName]
