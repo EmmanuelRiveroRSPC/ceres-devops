@@ -4,6 +4,18 @@ import argparse
 import subprocess
 import os
 
+#Coloritos!!!!
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    RESETALL = '\033[0m'
+
 def runPython(testName, arguments, testDirectory):
     localPath = f"{testDirectory}/{testName}.py"
 
@@ -73,6 +85,11 @@ for test in alltestSet[testSet]:
             print (f"  {appType}")
     
 print ("All test complete")
-print ("Summary:")
+print (bcolors.HEADER + "Summary:" + bcolors.RESETALL)
 for test in SummaryList:
-    print ("{}:{}".format(test["name"], test["result"]))
+    printable = ""
+    if test["result"] == "PASS":
+        printable = bcolors.OKGREEN + test["result"]
+    else:
+        printable = bcolors.FAIL + test["result"]
+    print (" {}:{}{}".format(test["name"], printable, bcolors.RESETALL))
