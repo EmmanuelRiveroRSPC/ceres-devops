@@ -1,4 +1,5 @@
 from genericpath import isfile
+from syslog import LOG_INFO
 import yaml
 import argparse
 import subprocess
@@ -16,6 +17,13 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     RESETALL = '\033[0m'
+
+### Sum a list of logicial expresions 
+def logocialSum(logicals):
+    result = True
+    for i in logicals:
+        result = result and i
+    return result
 
 def runProcess(cmd):
     Process = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -38,11 +46,20 @@ def fileCheck(localFile, fileName, type):
     url = removeLastSlash(Artifactory.url)
 
     if not os.path.isfile(localFile):
-        print ("not in local")
+        print ("file not in local")
         if not Artifactory.skip:
+            print ("Downloading from Artifactory")
             ArtifactoryURL = url + "/" + Artifactory.repository + "/" + type + "/" + fileName
             response = requests.get(ArtifactoryURL)
-            open(localFile, "wb").write(response.content)
+
+            if response.status_code == 200:
+                open(localFile, "wb").write(response.content)
+            else: 
+                print ("can't download the test file")
+                return False
+        else:
+            return False
+    return True
 
 def runTest(testName, arguments, testDirectory, testType):
     fileName = ""
@@ -59,10 +76,12 @@ def runTest(testName, arguments, testDirectory, testType):
         print ("Suported types:")
         for appType in suportedTypes.supported:
             print (f"  {appType}")
-        exit(1)
+        return {"name":testName, "result":"Not Supported"}
 
     localFile = f"{testDirectory}/{fileName}"
 
+    if fileCheck(localFile, fileName, testType):
+        return {"name":testName, "result":"Not Found"}
 
     cmd.append(localFile)
     
@@ -111,16 +130,24 @@ def main():
 
     for test in alltestSet[testSet]:
         SummaryList.append(runTest(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory, testType=test["type"]))
-        
+    
+    outcome = []
     print ("All test complete")
     print (bcolors.HEADER + bcolors.BOLD + "Summary:" + bcolors.RESETALL)
+
     for test in SummaryList:
         printable = ""
         if test["result"] == "Pass":
             printable = bcolors.OKGREEN + test["result"]
+            outcome.append(True)
         else:
             printable = bcolors.FAIL + test["result"]
+            outcome.append(False)
+
         print (" {}: {}{}".format(test["name"], printable, bcolors.RESETALL))
+    
+    if not logocialSum(outcome):
+        exit(1)
 
 if __name__ == "__main__":
     main()
