@@ -80,7 +80,7 @@ def runTest(testName, arguments, testDirectory, testType):
 
     localFile = f"{testDirectory}/{fileName}"
 
-    if fileCheck(localFile, fileName, testType):
+    if not fileCheck(localFile, fileName, testType):
         return {"name":testName, "result":"Not Found"}
 
     cmd.append(localFile)
