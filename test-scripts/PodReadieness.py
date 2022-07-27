@@ -24,8 +24,8 @@ parser.add_argument('-t', '--timeout', help='test duration before exiting', defa
 args=parser.parse_args()
 
 url=args.url
-interval=args.interval
-timeout=args.timeout
+interval=int(args.interval)
+timeout=int(args.timeout)
 
 totalTries=floor(timeout/interval)
 
@@ -42,10 +42,10 @@ for i in range(totalTries):
         r = requests.get(url, timeout=1)
     except:
         print("Can't connect...")
-        exit(1)
         
     if r.status_code == 200:
-        body = r.json
+        body = r.json()
+        
         if body["status"] == "UP":
             running = True
             break
