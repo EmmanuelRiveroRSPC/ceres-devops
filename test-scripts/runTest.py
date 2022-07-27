@@ -39,7 +39,7 @@ def runTest(testName, arguments, testDirectory, testType):
         cmd = ["java", "-jar"]
 
     if testType not in suportedTypes.suppoerted:
-        print ("Type: {} not suported for test: {}".format(test["type"], test["name"]))
+        print ("Type: {} not suported for test: {}".format(testType,testName))
         print ("Suported types:")
         for appType in suportedTypes.suppoerted:
             print (f"  {appType}")
