@@ -38,7 +38,7 @@ args=parser.parse_args()
 
 listPath = args.list
 testSet = args.test_set
-testDirectory=parser.test_directory
+testDirectory=args.test_directory
 
 alltestSet = {}
 with open(listPath) as file:
