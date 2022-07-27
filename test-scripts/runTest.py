@@ -59,32 +59,36 @@ def fileCheck(localFile, fileName, type):
             try:
                 response = requests.get(ArtifactoryURL)
             except:
-                print ("Can't connect to artifactory")
+                print ("Can't connect to artifactory server")
                 return False
+
             if response.status_code == 200:
                 open(localFile, "wb").write(response.content)
             else: 
-                print ("can't download the test file")
+                print ("Test file not found in artifactory")
                 return False
         else:
             return False
     return True
 
-def runTest(testName, arguments, testDirectory, testType):
+def runTest(testName, arguments, testDirectory, rawTestType):
     fileName = ""
     cmd = []
-    if testType == "python" or testType == "py":
+    if rawTestType == "python" or rawTestType == "py":
         cmd = ["python"]
+        testType = "python"
         fileName = testName + ".py"
-    if testType == "java" or testType =="jar":
+    if rawTestType == "java" or rawTestType =="jar":
         cmd = ["java", "-jar"]
+        testType = "java"
         fileName = testName + ".jar"
-    if testType == "ruby" or testType == "rb":
+    if rawTestType == "ruby" or rawTestType == "rb":
         cmd = ["java", "-jar"]
+        testType = "ruby"
         fileName = testName + ".rb"
 
-    if testType not in suportedTypes.supported:
-        print ("{}: {} type not suported for test".format(testName, testType))
+    if rawTestType not in suportedTypes.supported:
+        print ("{}: {} type not suported for test".format(testName, rawTestType))
         print ("Suported types:")
         for appType in suportedTypes.supported:
             print (f"  {appType}")
