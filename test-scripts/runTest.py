@@ -54,7 +54,7 @@ def runTest(testName, arguments, testDirectory, testType):
     else:
         result = "Failed"
     
-    return {"name":test["name"], "result":result}
+    return {"name":testName, "result":result}
 
 class Artifactory:
     url = ""
