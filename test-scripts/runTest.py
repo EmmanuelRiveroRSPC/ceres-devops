@@ -83,7 +83,7 @@ def runTest(testName, arguments, testDirectory, rawTestType):
         testType = "java"
         fileName = testName + ".jar"
     if rawTestType == "ruby" or rawTestType == "rb":
-        cmd = ["java", "-jar"]
+        cmd = ["ruby"]
         testType = "ruby"
         fileName = testName + ".rb"
 
