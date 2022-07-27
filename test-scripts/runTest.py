@@ -38,6 +38,7 @@ args=parser.parse_args()
 
 listPath = args.list
 testSet = args.test_set
+testDirectory=parser.test_directory
 
 alltestSet = {}
 with open(listPath) as file:
@@ -47,7 +48,7 @@ with open(listPath) as file:
 
 for test in alltestSet[testSet]:
     if test["type"] == "python":
-        runPython(testName=test["name"], arguments=test["argsLine"])
+        runPython(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory)
 
     if test["type"] == "java":
         runJava(testName=test["name"], arguments=test["argsLine"])
