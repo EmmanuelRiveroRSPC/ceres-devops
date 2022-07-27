@@ -15,3 +15,8 @@ Smoke-test:
   - name: e2e3
     type: java
     argsLine: "-Djavaarg blalala"
+
+Artifactory:
+  url: http://salus-artifactory.dev.monplat.rackspace.net/artifactory/
+  repository: test-modules
+    
