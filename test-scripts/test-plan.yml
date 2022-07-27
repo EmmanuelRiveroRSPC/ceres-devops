@@ -1,5 +1,5 @@
 Readiness:
-  - name: podReadieness
+  - name: podReadiness
     type: python
     argsLine: "-u http://localhost:9000/actuator/health/readiness -i 2 -t 60"
 

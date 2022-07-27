@@ -15,9 +15,13 @@ def runPython(testName, arguments, testDirectory):
     argumentsList = arguments.split()
     cmd.extend(argumentsList)
     Process = subprocess.run(cmd, stdout=subprocess.PIPE)
-    podsText = Process.stdout.decode('utf-8')
-    print (Process.args)
-    print (podsText)
+    Text = Process.stdout.decode('utf-8')
+    print (Text)
+    
+    if Process.returncode == 0:
+        return True
+    else:
+        return False
 
 def runJava(testName, arguments):
     cmd = ["java", "-jar", testName]
@@ -47,9 +51,17 @@ with open(listPath) as file:
     # scalar values to Python the dictionary format
     alltestSet = yaml.load(file, Loader=yaml.FullLoader)
 
+SummaryList = []
+
 for test in alltestSet[testSet]:
     if test["type"] == "python":
-        runPython(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory)
+        print ("Starting test: {}".format(test["name"]) )
+        result = ""
+        if runPython(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory):
+            result = "Pass"
+        else:
+            result = "Failed"
+        SummaryList.append({"name":test["name"], "result":result})
 
     if test["type"] == "java":
         runJava(testName=test["name"], arguments=test["argsLine"])
@@ -60,4 +72,7 @@ for test in alltestSet[testSet]:
         for appType in suportedTypes:
             print (f"  {appType}")
     
-    
+print ("All test complete")
+print ("Summary:")
+for test in SummaryList:
+    print ("{}:{}".format(test["name"], test["result"]))
