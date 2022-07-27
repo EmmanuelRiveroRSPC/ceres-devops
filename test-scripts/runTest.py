@@ -10,7 +10,6 @@ def runPython(testName, arguments, testDirectory):
     if not os.path.isfile(localPath):
         print ("not in local")
     
-
     argumentsList = arguments.split()
     cmd.extend(argumentsList)
     Process = subprocess.run(cmd, stdout=subprocess.PIPE)
