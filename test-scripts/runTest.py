@@ -3,11 +3,19 @@ import argparse
 import subprocess
 
 def runPython(testName, arguments):
-    cmd = ["python", testName, arguments]
+    cmd = ["python", testName]
+
+    argumentsList = arguments.split()
+    cmd.extend(argumentsList)
+
     print (cmd)
 
 def runJava(testName, arguments):
-    cmd = ["java", "-jar", testName, arguments]
+    cmd = ["java", "-jar", testName]
+
+    argumentsList = arguments.split()
+    cmd.extend(argumentsList)
+
     print (cmd)
 
 suportedTypes = ['python', 'java']

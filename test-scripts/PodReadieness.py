@@ -18,7 +18,7 @@ class bcolors:
 parser=argparse.ArgumentParser()
 
 parser.add_argument('-u', '--url', help='URL', required=True)
-parser.add_argument('-i', '--inverval', help='time between tests', default="5")
+parser.add_argument('-i', '--interval', help='time between tests', default="5")
 parser.add_argument('-t', '--timeout', help='test duration before exiting', default="300")
 
 args=parser.parse_args()
