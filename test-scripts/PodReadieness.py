@@ -45,12 +45,13 @@ for i in range(totalTries):
         
     if r.status_code == 200:
         body = r.json()
-        
+
         if body["status"] == "UP":
             running = True
             break
     
-    print ("Wating for the aplicacion response")
+    print ("Wating for the aplicacion response...\n")
+    sleep(interval)
 
 if running:
     print ("The aplication is ready!!!")
