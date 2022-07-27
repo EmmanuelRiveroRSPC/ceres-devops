@@ -38,7 +38,7 @@ def runTest(testName, arguments, testDirectory, testType):
     if testType == "java":
         cmd = ["java", "-jar"]
 
-    if test["type"] not in suportedTypes.suppoerted:
+    if testType not in suportedTypes.suppoerted:
         print ("Type: {} not suported for test: {}".format(test["type"], test["name"]))
         print ("Suported types:")
         for appType in suportedTypes.suppoerted:
@@ -63,7 +63,6 @@ class Artifactory:
 
 class suportedTypes:
     suppoerted =  ['python', 'java']
-
 
 def main():
     parser=argparse.ArgumentParser()
