@@ -56,8 +56,11 @@ def fileCheck(localFile, fileName, type):
             url = removeLastSlash(Artifactory.url)
             print ("Downloading from Artifactory")
             ArtifactoryURL = url + "/" + Artifactory.repository + "/" + type + "/" + fileName
-            response = requests.get(ArtifactoryURL)
-
+            try:
+                response = requests.get(ArtifactoryURL)
+            except:
+                print ("Can't connect to artifactory")
+                return False
             if response.status_code == 200:
                 open(localFile, "wb").write(response.content)
             else: 
