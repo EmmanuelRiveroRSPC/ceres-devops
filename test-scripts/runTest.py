@@ -37,8 +37,8 @@ def runProcess(cmd):
 
 def removeLastSlash(string):
     length = len(string)
-    if str[length -1] == "/":
-        return str[:-1]
+    if string[length - 1] == "/":
+        return string[:-1]
     else:
         return string
 
