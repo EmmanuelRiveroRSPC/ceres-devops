@@ -32,6 +32,8 @@ jobs:
             import subprocess 
             import requests
 
+            print("this si in test_seg branch")
+
             d = os.environ.copy
             f = dict(os.environ)
 
@@ -51,11 +53,3 @@ jobs:
 
             for i in user:
               print (i)
-
-            r = requests.get("http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers", auth=(user, password)) 
-            print(r.status_code)
-            print(r.json())
-      
-      - run: curl -u ${{ secrets.USER_TEST }}:${{ secrets.PASSWORD_TEST }} -X GET http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers
-
-      - run: curl -u ${{ env.user-test }}:${{ env.password-test }} -X GET http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers
