@@ -1,7 +1,7 @@
 Readiness:
   - name: podReadiness
     type: python
-    argsLine: "-u http://localhost:9000/actuator/health/readiness -i 2 -t 60 -u"
+    argsLine: "-u http://localhost:9000/actuator/health/readiness -i 2 -t 60"
 
 Smoke-test:
   - name: e2e

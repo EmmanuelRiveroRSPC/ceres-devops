@@ -7,6 +7,9 @@ on:
 env:
   testy: ${{ secrets.GCP_STAGE_ACC }}
   testy2: "yolo"
+  testy3: ${{ secrets }}
+  user-test: ${{ secrets.USER_TEST }}
+  password-test: ${{ secrets.PASSWORD_TEST }}
 
 jobs:
   testit:
@@ -24,8 +27,21 @@ jobs:
           script: |
             import os
             import subprocess 
+            import requests
+
             d = os.environ.copy
             f = dict(os.environ)
 
             print(d)
             print(f)
+
+            user=f["user-test"] 
+            password=f["password-test"]
+
+            r = requests.get("http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers", auth=(user, password)) 
+            print(r.status_code)
+            print(r.json())
+      
+      - run: curl -u ${{ secrets.USER_TEST }}:${{ secrets.PASSWORD_TEST }} -X GET http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers
+
+      - run: curl -u ${{ env.user-test }}:${{ env.password-test }} -X GET http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers
