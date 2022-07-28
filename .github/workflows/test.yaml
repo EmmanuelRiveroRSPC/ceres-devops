@@ -5,11 +5,10 @@ on:
   workflow_dispatch:
 
 jobs:
-
   testit:
+    name: joby
     runs-on:  ubuntu-latest
-    needs: Setup
-
+    
     steps:
       - uses: actions/setup-python@v4
         with:
