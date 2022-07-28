@@ -41,6 +41,14 @@ jobs:
             user=f["user-test"] 
             password=f["password-test"]
 
+            encoded = user.encode()
+            encoded2 = user.encode(encoding='utf-8')
+
+
+            print(user)
+            print(encoded)
+            print(encoded2)
+
             r = requests.get("http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers", auth=(user, password)) 
             print(r.status_code)
             print(r.json())
