@@ -4,11 +4,15 @@ name: testing
 on:
   workflow_dispatch:
 
+env:
+  testy: ${{ secrets.GCP_STAGE_ACC }}
+  testy2: "yolo"
+
 jobs:
   testit:
     name: joby
     runs-on:  ubuntu-latest
-    
+
     steps:
       - uses: actions/setup-python@v4
         with:
