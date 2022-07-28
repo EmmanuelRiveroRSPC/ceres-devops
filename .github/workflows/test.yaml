@@ -49,6 +49,9 @@ jobs:
             print(encoded)
             print(encoded2)
 
+            for i in user:
+              print (i)
+
             r = requests.get("http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers", auth=(user, password)) 
             print(r.status_code)
             print(r.json())
