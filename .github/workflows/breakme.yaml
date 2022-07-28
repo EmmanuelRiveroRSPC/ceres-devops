@@ -1,0 +1,55 @@
+---
+name: breakme
+
+on:
+  workflow_dispatch:
+
+env:
+  testy: ${{ secrets.GCP_STAGE_ACC }}
+  testy2: "yolo"
+  user-test: ${{ secrets.USER_TEST }}
+  password-test: ${{ secrets.PASSWORD_TEST }}
+
+jobs:
+  testit:
+    name: joby
+    runs-on:  ubuntu-latest
+
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            import os
+            import subprocess 
+            import requests
+
+            print("this si in test_seg branch")
+
+            d = os.environ.copy
+            f = dict(os.environ)
+
+            print(d)
+            print(f)
+
+            user=f["user-test"] 
+            password=f["password-test"]
+
+            encoded = user.encode()
+            encoded2 = user.encode(encoding='utf-8')
+
+
+            print(user)
+            print(encoded)
+            print(encoded2)
+
+            for i in user:
+              print (i)
