@@ -103,6 +103,8 @@ def runTest(testName, arguments, testDirectory, rawTestType):
     
     argumentsList = arguments.split()
     cmd.extend(argumentsList)
+    
+    print(f"Starting test: {bcolors.BOLD}{testName}{bcolors.RESETALL}/n")
     if runProcess(cmd):
         result = "Pass"
     else:
