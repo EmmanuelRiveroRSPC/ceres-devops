@@ -145,7 +145,7 @@ def main():
     SummaryList = []
 
     for test in alltestSet[testSet]:
-        SummaryList.append(runTest(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory, testType=test["type"]))
+        SummaryList.append(runTest(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory, rawTestType=test["type"]))
     
     outcome = []
     print ("Test run completed")
