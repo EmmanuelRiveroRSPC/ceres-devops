@@ -55,7 +55,7 @@ jobs:
           port-in: 7777
           port-out: 9000
 
-      - run: python3 ./test-scripts/runTest.py -t Readiness -l ./test-scripts/test-plan.yml -d /test-scripts
+      - run: python3 ./test-scripts/runTest.py -t Readiness -l ./test-scripts/test-plan.yml -d ./test-scripts
 
   Smoke-test:
     runs-on: ubuntu-latest
