@@ -19,7 +19,7 @@ runs:
   using: "composite"
   steps:
 
-    - if: inputs.action == "port-forward"
+    - if: inputs.action == port-forward
       shell: bash
       run: |
         kubectl port-forward service/${{ inputs.service }} ${{ inputs.port-out }}:${{ inputs.port-in }}
