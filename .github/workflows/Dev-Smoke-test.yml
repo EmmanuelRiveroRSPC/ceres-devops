@@ -51,7 +51,7 @@ jobs:
       - uses: ./.github/actions/k8sHelper
         with:
           action: port-forward
-          service: ceres
+          service: ceres-new
           port-in: 7777
           port-out: 9000
 
