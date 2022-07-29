@@ -40,16 +40,17 @@ print ("Wating for pod to come alive...")
 for i in range(totalTries):
     try:
         r = requests.get(url, timeout=1)
+
+        
+        if r.status_code == 200:
+            body = r.json()
+
+            if body["status"] == "UP":
+                running = True
+                break
     except:
         print("Can't connect...")
-        
-    if r.status_code == 200:
-        body = r.json()
 
-        if body["status"] == "UP":
-            running = True
-            break
-    
     print ("Wating for the aplicacion response...\n")
     sleep(interval)
 
