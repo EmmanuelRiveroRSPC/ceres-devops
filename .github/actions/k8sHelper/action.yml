@@ -22,4 +22,4 @@ runs:
     - if: inputs.action == 'port-forward'
       shell: bash
       run: |
-        kubectl port-forward service/${{ inputs.service }} ${{ inputs.port-out }}:${{ inputs.port-in }}
+        kubectl port-forward service/${{ inputs.service }} ${{ inputs.port-out }}:${{ inputs.port-in }} &

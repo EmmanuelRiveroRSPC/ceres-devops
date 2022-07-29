@@ -41,6 +41,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: ./.github/actions/GCPSetup
+        with:
+          GCPCreds: ${{ secrets.GCP_SA_JSON }} 
+          k8sSetup: "TRUE"
+          clusterName: $CLUSTER_NAME
+          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
+
       - uses: ./.github/actions/k8sHelper
         with:
           action: port-forward
