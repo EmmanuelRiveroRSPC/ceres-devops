@@ -33,7 +33,7 @@ if totalTries <= 0:
     print ("timeout must be equal or higher that interval")
     exit(1)
 
-print (f"Will try a total of {totalTries} times, each {interval} secounds")
+print (f"Will try a total of {totalTries} times, each {interval} seconds")
 
 running = False
 print ("Wating for pod to come alive...")
