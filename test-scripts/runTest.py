@@ -3,14 +3,16 @@
 # Will try to load test scripts from local, other wise will try to download from artifactory
 # Each test in the test set must have a name, type(python, java...), and argLine(arguments)
 # Artifactory url and repository must be specified in the test-plan yaml
+# Must configure k8s cluster before run, to be able to load secrets and config maps
 
-from genericpath import isfile
-from syslog import LOG_INFO
 import yaml
 import argparse
 import subprocess
 import os
 import requests
+import json
+import base64
+import copy
 
 #Coloritos!!!!
 class bcolors:
@@ -40,6 +42,14 @@ def runProcess(cmd):
         return True
     else:
         return False
+
+def runProcessOutput(cmd):
+    Process = subprocess.run(cmd, stdout=subprocess.PIPE)
+    Text = Process.stdout.decode('utf-8')
+    print (Text)
+    
+    if Process.returncode == 0:
+        return Text
 
 def removeLastSlash(string):
     length = len(string)
@@ -71,7 +81,7 @@ def fileCheck(localFile, fileName, type):
             return False
     return True
 
-def runTest(testName, arguments, testDirectory, rawTestType):
+def runTest(testName, arguments, testDirectory, rawTestType, environment):
     fileName = ""
     cmd = []
     if rawTestType == "python" or rawTestType == "py":
@@ -112,6 +122,44 @@ def runTest(testName, arguments, testDirectory, rawTestType):
     
     return {"name":testName, "result":result}
 
+def loadEnv(environment):
+    newEnv = copy.deepcopy(os.environ)
+    variables = environment.envVars
+    configMaps = environment.configMaps
+    secrets = environment.secrets
+
+    for vars in variables:
+        keys= list(vars.keys())
+        for key in keys:
+            newEnv[key]=vars[key]
+
+    for config in configMaps:
+        cmd = ["kubectl", "get", "configmaps", config, "-o" "json"]
+        configMapsJSON = json.loads(runProcessOutput(cmd))
+        data = configMapsJSON["data"]
+        keys= list(data.keys())
+        for key in keys:
+             newEnv[key]=data[key]
+
+    for secret in secrets:
+        cmd = ["kubectl", "get", "secrets", secret, "-o" "json"]
+        secretsJSON = json.loads(runProcessOutput(cmd))
+        data = secretsJSON["data"]
+        keys= list(data.keys())
+        for key in keys:
+            try:
+                newEnv[key]=base64.b64decode(data[key]).decode("utf-8")
+            except:
+                print (f"can't load variable: {key}")
+    return newEnv
+
+
+class EnvironmentArgs:
+    def __init__(self, envVars, configMaps, secrets):
+        self.envVars=envVars
+        self.configMaps=configMaps
+        self.secrets=secrets
+
 class Artifactory:
     url = ""
     repository = ""
@@ -147,7 +195,8 @@ def main():
     SummaryList = []
 
     for test in alltestSet[testSet]:
-        SummaryList.append(runTest(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory, rawTestType=test["type"]))
+        environment = EnvironmentArgs(envVars=test["env"], configMaps=test["k8sConfigMap"], secrets=test["k8sSecrets"])
+        SummaryList.append(runTest(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory, rawTestType=test["type"], environment=environment))
     
     outcome = []
     print ("Test run completed")

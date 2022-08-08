@@ -4,9 +4,17 @@ Readiness:
     argsLine: "-u http://localhost:9000/actuator/health/readiness -i 2 -t 60"
 
 Smoke-test:
-  - name: e2e
+  - name: ceres-e2et
     type: java
-    argsLine: "-Djavaarg blalala"
+    argsLine: ""
+    env:
+      - APP_CERES-QUERY-BASE-URL: http://ceres-api.dev.monplat.rackspace.net/api
+      - APP_CERES-QUERY-DOWNSAMPLED-AGGREGATOR: max
+    k8sSecrets:
+      - ceres-e2e-secret
+      - umb-ceres-ingestor-ssl
+    k8sConfigMap:
+      - umb-ceres-ingestor
 
   - name: e2e2
     type: java
