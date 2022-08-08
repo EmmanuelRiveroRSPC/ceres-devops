@@ -34,7 +34,7 @@ def logocialSum(logicals):
     return result
 
 def runProcess(cmd, env):
-    Process = subprocess.run(cmd, stdout=subprocess.PIPE, )
+    Process = subprocess.run(cmd, stdout=subprocess.PIPE, env=env)
     Text = Process.stdout.decode('utf-8')
     print (Text)
     
@@ -82,6 +82,7 @@ def fileCheck(localFile, fileName, type):
     return True
 
 def runTest(testName, arguments, testDirectory, rawTestType, environment):
+    env = loadEnv(environment)
     fileName = ""
     cmd = []
     if rawTestType == "python" or rawTestType == "py":
@@ -115,7 +116,7 @@ def runTest(testName, arguments, testDirectory, rawTestType, environment):
     cmd.extend(argumentsList)
     
     print(f"Starting test: {bcolors.BOLD}{testName}{bcolors.RESETALL}\n")
-    if runProcess(cmd):
+    if runProcess(cmd, env):
         result = "Pass"
     else:
         result = "Failed"
