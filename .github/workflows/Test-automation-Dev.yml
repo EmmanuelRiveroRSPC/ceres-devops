@@ -71,7 +71,7 @@ jobs:
           clusterName: $CLUSTER_NAME
           GCPaccount: ${{ secrets.GCP_DEV_ACC }}
 
-      - run: python3 ./test-scripts/runTest.py -t Smoke-test -l ./test-scripts/test-plan.yml -d ./test-scripts
+      - run: python3 ./test-scripts/runTest.py -t Smoke-test -l ./test-scripts/test-plan-dev.yml -d ./test-scripts
 
   Functional-test:
     runs-on: ubuntu-latest
