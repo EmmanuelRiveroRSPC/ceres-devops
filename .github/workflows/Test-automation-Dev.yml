@@ -1,5 +1,5 @@
 ---
-name: Dev smoke test
+name: Tests automation Dev
 
 on:
   workflow_run:
@@ -62,7 +62,16 @@ jobs:
     needs: ["Readiness"]
 
     steps:
-      - uses: actions/checkout@v3      
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/GCPSetup
+        with:
+          GCPCreds: ${{ secrets.GCP_SA_JSON }} 
+          k8sSetup: "TRUE"
+          clusterName: $CLUSTER_NAME
+          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
+
+      - run: python3 ./test-scripts/runTest.py -t Smoke-test -l ./test-scripts/test-plan.yml -d ./test-scripts
 
   Functional-test:
     runs-on: ubuntu-latest

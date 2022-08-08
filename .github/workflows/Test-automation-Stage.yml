@@ -1,5 +1,5 @@
 ---
-name: Stage smoke test
+name: Tests automation Stage
 
 on:
   workflow_run:
