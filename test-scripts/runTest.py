@@ -153,16 +153,17 @@ def loadEnv(environment):
             except:
                 print (f"can't load variable: {key}")
 
-    for files in secrets:
-        cmd = ["kubectl", "get", "secrets", secret, "-o" "json"]
+    for file in files:
+        cmd = ["kubectl", "get", "secrets", file["k8s-secret"], "-o" "json"]
+        
         secretsJSON = json.loads(runProcessOutput(cmd))
         data = secretsJSON["data"]
         keys= list(data.keys())
-        for key in keys:
-            try:
-                newEnv[key]=base64.b64decode(data[key]).decode("utf-8")
-            except:
-                print (f"can't load variable: {key}")
+        
+        f = open(file["fileName"], "wb")
+        f.write(base64.b64decode(data[file["name"]]))
+        f.close()
+        newEnv[file["VarName"]] = file["fileName"]
 
     return newEnv
 

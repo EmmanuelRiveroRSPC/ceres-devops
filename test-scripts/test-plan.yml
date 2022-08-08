@@ -18,21 +18,13 @@ Smoke-test:
       - ceres-e2e-test
     files:
       - name: keystore-p12
-        K8s-secret: ceres-e2e-secret
+        k8s-secret: umb-ceres-ingestor-ssl
         fileName: keystore.p12
         VarName: SPRING_KAFKA_SSL_KEY_STORE_LOCATION
       - name: truststore-jks
-        K8s-secret: ceres-e2e-secret
-        fileName: /tmp/ssl/keystore.p12
+        k8s-secret: umb-ceres-ingestor-ssl
+        fileName: truststore.jks
         VarName: SPRING_KAFKA_SSL_TRUST_STORE_LOCATION
-
-  - name: e2e2
-    type: java
-    argsLine: "-Djavaarg blalala"
-
-  - name: e2e3
-    type: java
-    argsLine: "-Djavaarg blalala"
 
 Artifactory:
   url: http://salus-artifactory.dev.monplat.rackspace.net/artifactory/
