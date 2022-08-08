@@ -33,8 +33,8 @@ def logocialSum(logicals):
         result = result and i
     return result
 
-def runProcess(cmd):
-    Process = subprocess.run(cmd, stdout=subprocess.PIPE)
+def runProcess(cmd, env):
+    Process = subprocess.run(cmd, stdout=subprocess.PIPE, )
     Text = Process.stdout.decode('utf-8')
     print (Text)
     
@@ -127,6 +127,7 @@ def loadEnv(environment):
     variables = environment.envVars
     configMaps = environment.configMaps
     secrets = environment.secrets
+    files = environment.files
 
     for vars in variables:
         keys= list(vars.keys())
@@ -151,14 +152,27 @@ def loadEnv(environment):
                 newEnv[key]=base64.b64decode(data[key]).decode("utf-8")
             except:
                 print (f"can't load variable: {key}")
+
+    for files in secrets:
+        cmd = ["kubectl", "get", "secrets", secret, "-o" "json"]
+        secretsJSON = json.loads(runProcessOutput(cmd))
+        data = secretsJSON["data"]
+        keys= list(data.keys())
+        for key in keys:
+            try:
+                newEnv[key]=base64.b64decode(data[key]).decode("utf-8")
+            except:
+                print (f"can't load variable: {key}")
+
     return newEnv
 
 
 class EnvironmentArgs:
-    def __init__(self, envVars, configMaps, secrets):
+    def __init__(self, envVars, configMaps, secrets, files):
         self.envVars=envVars
         self.configMaps=configMaps
         self.secrets=secrets
+        self.files=files
 
 class Artifactory:
     url = ""
@@ -195,7 +209,7 @@ def main():
     SummaryList = []
 
     for test in alltestSet[testSet]:
-        environment = EnvironmentArgs(envVars=test["env"], configMaps=test["k8sConfigMap"], secrets=test["k8sSecrets"])
+        environment = EnvironmentArgs(envVars=test["env"], configMaps=test["k8sConfigMap"], secrets=test["k8sSecrets"], files=test["files"])
         SummaryList.append(runTest(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory, rawTestType=test["type"], environment=environment))
     
     outcome = []

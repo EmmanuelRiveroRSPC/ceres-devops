@@ -8,13 +8,23 @@ Smoke-test:
     type: java
     argsLine: ""
     env:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka-01.dev.monplat.rackspace.net:9092,kafka-02.dev.monplat.rackspace.net:9092,kafka-03.dev.monplat.rackspace.net:9092
       - APP_CERES-QUERY-BASE-URL: http://ceres-api.dev.monplat.rackspace.net/api
-      - APP_CERES-QUERY-DOWNSAMPLED-AGGREGATOR: max
+      - APP_UMF-TEST-TOPIC: ufm2.metrics.json
+      - SPRING_PROFILES_ACTIVE: debug
     k8sSecrets:
-      - ceres-e2e-secret
-      - umb-ceres-ingestor-ssl
+      - ceres-e2e-test
     k8sConfigMap:
-      - umb-ceres-ingestor
+      - ceres-e2e-test
+    files:
+      - name: keystore-p12
+        K8s-secret: ceres-e2e-secret
+        fileName: keystore.p12
+        VarName: SPRING_KAFKA_SSL_KEY_STORE_LOCATION
+      - name: truststore-jks
+        K8s-secret: ceres-e2e-secret
+        fileName: /tmp/ssl/keystore.p12
+        VarName: SPRING_KAFKA_SSL_TRUST_STORE_LOCATION
 
   - name: e2e2
     type: java
