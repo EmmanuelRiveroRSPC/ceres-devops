@@ -46,7 +46,6 @@ def runProcess(cmd, env):
 def runProcessOutput(cmd):
     Process = subprocess.run(cmd, stdout=subprocess.PIPE)
     Text = Process.stdout.decode('utf-8')
-    print (Text)
     
     if Process.returncode == 0:
         return Text
