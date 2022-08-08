@@ -19,12 +19,14 @@ Smoke-test:
     files:
       - name: keystore-p12
         k8s-secret: umb-ceres-ingestor-ssl
-        fileName: keystore.p12
-        VarName: SPRING_KAFKA_SSL_KEY_STORE_LOCATION
+        fileName: /tmp/keystore.p12
+        varName: SPRING_KAFKA_SSL_KEY_STORE_LOCATION
+        varValue: file:/tmp/keystore.p12
       - name: truststore-jks
         k8s-secret: umb-ceres-ingestor-ssl
-        fileName: truststore.jks
-        VarName: SPRING_KAFKA_SSL_TRUST_STORE_LOCATION
+        fileName: /tmp/truststore.jks
+        varName: SPRING_KAFKA_SSL_TRUST_STORE_LOCATION
+        varValue: file:/tmp/truststore.jks
 
 Artifactory:
   url: http://salus-artifactory.dev.monplat.rackspace.net/artifactory/

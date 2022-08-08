@@ -164,7 +164,11 @@ def loadEnv(environment):
         f = open(file["fileName"], "wb")
         f.write(base64.b64decode(data[file["name"]]))
         f.close()
-        newEnv[file["VarName"]] = file["fileName"]
+        
+        if 'varValue' in file:
+            newEnv[file["varName"]] = file["varValue"]
+        else:
+            newEnv[file["varName"]] = file["fileName"]
 
     return newEnv
 
