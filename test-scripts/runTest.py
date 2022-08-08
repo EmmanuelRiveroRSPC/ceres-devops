@@ -215,7 +215,27 @@ def main():
     SummaryList = []
 
     for test in alltestSet[testSet]:
-        environment = EnvironmentArgs(envVars=test["env"], configMaps=test["k8sConfigMap"], secrets=test["k8sSecrets"], files=test["files"])
+        if "env" in test:
+            envVars = envVars=test["env"]
+        else:
+            envVars = []
+
+        if "k8sConfigMap" in test:
+            configMaps =  configMaps=test["k8sConfigMap"]
+        else:
+            configMaps = []
+
+        if "k8sSecrets" in test:
+            secrets = secrets=test["k8sSecrets"]
+        else:
+            secrets = []
+
+        if "files" in test:
+            files = test["files"]
+        else: 
+            files = []
+            
+        environment = EnvironmentArgs(envVars=envVars, configMaps=configMaps, secrets=secrets, files=files)
         SummaryList.append(runTest(testName=test["name"], arguments=test["argsLine"], testDirectory=testDirectory, rawTestType=test["type"], environment=environment))
     
     outcome = []
