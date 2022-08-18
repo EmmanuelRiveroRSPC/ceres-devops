@@ -9,9 +9,12 @@ jobs:
     runs-on:  ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/GCPSetup
+      - name: Checkout helm-repo
+        uses: actions/checkout@v3
         with:
-          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
-          GCPCreds: ${{ secrets.GCP_DEV }} 
-          k8sSetup: 'TRUE'
+          repository: rax-maas/helm-ceres
+          ref: master
+          path: helm-ceres
+          token: ${{ secrets.GIT_SSH }}
+          
+      - run: ls -la
