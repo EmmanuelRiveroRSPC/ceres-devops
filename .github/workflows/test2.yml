@@ -15,6 +15,6 @@ jobs:
           repository: rax-maas/helm-ceres
           ref: master
           path: helm-ceres
-          token: ${{ secrets.GIT_SSH }}
+          ssh-key: ${{ secrets.GIT_SSH }}
           
       - run: ls -la
