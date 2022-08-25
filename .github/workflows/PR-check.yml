@@ -9,7 +9,6 @@ on:
 
 env:
   ARTIFACT_VERSION: dummy-verison 
-  CACHE_KEY: mvn-${{ github.workflow }}
 
 jobs:
   build:
@@ -22,7 +21,7 @@ jobs:
       - name: Maven Cache 
         uses: actions/cache@v3
         with:
-          key: pr-check-cache
+          key: mvn-${{ github.workflow }}
           path: |
             ~/.m2/repository
 
