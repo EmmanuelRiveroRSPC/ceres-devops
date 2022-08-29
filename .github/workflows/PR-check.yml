@@ -9,6 +9,7 @@ on:
 
 env:
   ARTIFACT_VERSION: dummy-verison 
+  packageManager: maven
 
 jobs:
   build:
@@ -33,7 +34,7 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt-hotspot'
-          cache: maven
+          cache: setup-java-${{ platform }}-${{ env.packageManager }}-${{ hashFiles('**/pom.xml') }}
 
       - name: Build with Maven
         shell: bash

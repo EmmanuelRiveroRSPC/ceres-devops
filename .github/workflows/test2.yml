@@ -4,6 +4,9 @@ name: testing2
 on:
   workflow_dispatch:
 
+env:
+  packageManager: maven
+
 jobs:
   seeit:
     runs-on:  ubuntu-latest
@@ -12,4 +15,4 @@ jobs:
       - name: Checkout helm-repo
         uses: actions/checkout@v3
 
-      - run: echo ${{ hashFiles('**/pom.xml') }} 
+      - run: echo setup-java-${{ runner.os }}-${{ env.packageManager }}-${{ hashFiles('**/pom.xml') }}
