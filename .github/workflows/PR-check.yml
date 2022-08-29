@@ -26,7 +26,7 @@ jobs:
         run: 'gsutil cp gs://salus-mavenrepository/m2-settings.xml ./.mvn/settings.xml'
 
       - name: .m2 forder [*** fix it please ***]
-        run: sed -i '/localRepository/d' ./.mvn/settings.xml
+        run: sed -i '/<localRepository>/d' ./.mvn/settings.xml
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -35,15 +35,15 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
 
-      - name: Build with Maven
-        shell: bash
-        run: |
-          mvn -B verify -s .mvn/settings.xml 
-
-      - name: Build with jib
-        run: mvn compile jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummy    
-
 #      - name: Build with Maven
 #        shell: bash
 #        run: |
-#          mvn -B verify -s .mvn/settings.xml jib:dockerBuild -U -B -Ddocker.image.prefix=dummy    
+#          mvn -B verify -s .mvn/settings.xml 
+
+#      - name: Build with jib
+#        run: mvn compile jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummy    
+
+      - name: Build with Maven
+        shell: bash
+        run: |
+          mvn -B verify -s .mvn/settings.xml jib:dockerBuild -U -B -Ddocker.image.prefix=dummy    
