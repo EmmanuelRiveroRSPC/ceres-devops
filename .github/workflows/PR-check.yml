@@ -34,14 +34,12 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt-hotspot'
-          cache: setup-java-${{ platform }}-${{ env.packageManager }}-${{ hashFiles('**/pom.xml') }}
+          cache: setup-java-${{ runner.os }}-${{ env.packageManager }}-${{ hashFiles('**/pom.xml') }}
 
       - name: Build with Maven
         shell: bash
         run: |
-          mvn -B verify -s .mvn/settings.xml 
+          mvn -B verify jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummy -s .mvn/settings.xml 
 
-
-
-      - name: Build with jib
-        run: mvn compile jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummy    
+#      - name: Build with jib
+#        run: mvn compile jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummy    

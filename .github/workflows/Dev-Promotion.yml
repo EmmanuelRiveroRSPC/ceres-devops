@@ -9,8 +9,7 @@ env:
   CACHE_KEY: mvn-${{ github.workflow }}
 
 on: 
-  pull_request:
-    types: [ closed ]
+  push:
     branches: 
       - master
     paths-ignore:
