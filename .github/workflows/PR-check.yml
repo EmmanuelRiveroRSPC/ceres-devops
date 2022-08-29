@@ -7,6 +7,7 @@ on:
       - '.github/workflows/**'
       - 'test-script'  
 
+
 env:
   ARTIFACT_VERSION: dummy-verison 
   packageManager: maven
