@@ -11,10 +11,5 @@ jobs:
     steps:
       - name: Checkout helm-repo
         uses: actions/checkout@v3
-        with:
-          repository: rax-maas/helm-ceres
-          ref: master
-          path: helm-ceres
-          ssh-key: ${{ secrets.GIT_SSH }}
-          
-      - run: ls -la
+
+      - run: echo ${{ hashFiles('**/pom.xml') }} 
