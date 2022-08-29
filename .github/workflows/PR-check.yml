@@ -38,4 +38,12 @@ jobs:
       - name: Build with Maven
         shell: bash
         run: |
-          mvn -B verify -s .mvn/settings.xml jib:dockerBuild -U -B -Ddocker.image.prefix=dummy    
+          mvn -B verify -s .mvn/settings.xml 
+
+      - name: Build with jib
+        run: mvn compile jib:dockerBuild -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=dummy    
+
+#      - name: Build with Maven
+#        shell: bash
+#        run: |
+#          mvn -B verify -s .mvn/settings.xml jib:dockerBuild -U -B -Ddocker.image.prefix=dummy    
