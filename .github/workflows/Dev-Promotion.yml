@@ -35,13 +35,6 @@ jobs:
     ### Seting up runner env ###
       - uses: actions/checkout@v3
 
-      - name: Maven Cache 
-        uses: actions/cache@v3
-        with:
-          key: dev-promotion.cache
-          path: |
-            ~/.m2/repository
-
       - uses: ./.github/actions/GCPSetup
         with:
           GCPCreds: ${{ secrets.GCP_SA_JSON }} 
@@ -53,13 +46,14 @@ jobs:
         run: gcloud auth configure-docker gcr.io -q
 
       - name: .m2 forder [*** fix it please ***]
-        run: sed -i 's*/root/.m2/*~/.m2/*g' ./.mvn/settings.xml
+        run: sed -i '/<localRepository>/d' ./.mvn/settings.xml
 
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '14'
           distribution: 'adopt-hotspot'
+          cache: maven
 
       - name: Set artifact name
         shell: bash
@@ -71,18 +65,13 @@ jobs:
         shell: bash
         run: |
           mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_VERSION }} versions:commit
-          mvn -B deploy -s .mvn/settings.xml
+          mvn -B -U -s .mvn/settings.xml  deploy jib:build -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }} 
 
       # - name: Build with Maven
       #   shell: bash
       #   run: |
       #     mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_VERSION }} versions:commit
       #     mvn -B verify -s .mvn/settings.xml
-      
-      - run: ls ./target
-
-      - name: Build with jib
-        run: mvn compile jib:build -U -B -Dmaven.test.skip=true -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }}      
 
   Deploy:
     runs-on: ubuntu-latest

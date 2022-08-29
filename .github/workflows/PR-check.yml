@@ -1,5 +1,5 @@
 ---
-name: PR Check
+name: test
 
 on: 
   pull_request:
@@ -46,4 +46,4 @@ jobs:
       - name: Build with Maven
         shell: bash
         run: |
-          mvn -B verify -s .mvn/settings.xml jib:dockerBuild -U -B -Ddocker.image.prefix=dummy    
+          mvn -B -U -s .mvn/settings.xml verify jib:dockerBuild -Ddocker.image.prefix=dummy    
