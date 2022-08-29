@@ -17,13 +17,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Maven Cache 
-        uses: actions/cache@v3
-        with:
-          key: mvn-${{ github.workflow }}
-          path: |
-            ~/.m2/repository
 
       - uses: ./.github/actions/GCPSetup
         with:
@@ -40,6 +33,7 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt-hotspot'
+          cache: maven
 
       - name: Build with Maven
         shell: bash
