@@ -96,14 +96,14 @@ public class DownsampleJobProcessor {
     return trackingService.getTimeSlot(partition, group)
         .flatMapMany(ts -> {
           long timeslot = Long.parseLong(ts);
-          log.debug("Got timeslot: {} {} {}", partition, group, epochToLocalDateTime(timeslot));
+          log.trace("Got timeslot: {} {} {}", partition, group, epochToLocalDateTime(timeslot));
           return trackingService.getDownsampleSets(timeslot, partition)
               .name("processTimeSlot")
               .tag("partition", String.valueOf(partition))
               .tag("group", group)
               .metrics()
               .concatMap(downsampleSet ->
-                  this.downsampleProcessor.processDownsampleSet(downsampleSet, partition, group))
+                  this.downsampleProcessor.processSet(downsampleSet, partition, group, "downsample.set"))
               .then(trackingService.deleteTimeslot(partition, group, timeslot))
               .doOnError(Throwable::printStackTrace);
         });
