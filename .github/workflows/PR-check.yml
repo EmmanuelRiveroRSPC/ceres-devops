@@ -35,7 +35,7 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt-hotspot'
-          cache: setup-java-${{ runner.os }}-${{ env.packageManager }}-${{ hashFiles('**/pom.xml') }}
+          cache: maven
 
       - name: Build with Maven
         shell: bash
