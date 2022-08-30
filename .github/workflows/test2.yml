@@ -14,5 +14,7 @@ jobs:
     steps:
       - name: Checkout helm-repo
         uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.GIT_SSH }}
 
       - run: echo setup-java-${{ runner.os }}-${{ env.packageManager }}-${{ hashFiles('**/pom.xml') }}
