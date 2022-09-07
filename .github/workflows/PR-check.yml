@@ -6,7 +6,8 @@ on:
     paths-ignore:
       - '.github/workflows/**'
       - 'test-script'  
-
+  workflow_dispatch:
+  
 env:
   ARTIFACT_VERSION: dummy-verison 
 
