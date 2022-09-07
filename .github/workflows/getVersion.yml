@@ -59,14 +59,9 @@ jobs:
 
             version = major + '.' + minor + '.' + build
 
-            if int(major) == 0:
-              print(f"{version}:")
-              print('\033[1m' + "Not a release version, canceling promotion")
-            #  exit(1)
-
             BaseVersion = f"{major}.{minor}"
 
-            print ("version detected: {majorVersion}")
+            print ("Major version detected: {majorVersion}")
             set_env("BASE_VERSION", BaseVersion)           
 
       # Last image version pushed to stage
@@ -75,7 +70,7 @@ jobs:
           LAST_VERSION=$(gcloud container images list-tags gcr.io/${{ secrets.account }}/${{ inputs.image }} --limit=1 --sort-by=~TIMESTAMP --filter="TAGS~${{ env.BASE_VERSION }}." --format='table[no-heading](tags)')
           echo "LAST_VERSION=${LAST_VERSION}" >> $GITHUB_ENV
       
-      # Sanity tag check 
+      # Versions 
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
@@ -84,6 +79,7 @@ jobs:
               print ("No buid version detected for: ${{ env.BASE_VERSION }}")
               print ("Will generate a new version starting at ${{ env.BASE_VERSION }}.0")
               set_env("CURRENT_VERSION", "${{ env.BASE_VERSION }}.0")
+              set_env("NEW_VERSION", "${{ env.BASE_VERSION }}.0")
             else:
               version = "${{ env.LAST_VERSION }}".strip(",latest")
 
@@ -91,28 +87,19 @@ jobs:
                 print('\033[1m' + "Two or more tags found using the same image, aborting...")
                 exit(1)
               
-              print (f"version detected: {version}")
-              set_env("CURRENT_VERSION", version)
-        
-      - uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            lastVersion = "${{ env.LAST_VERSION }}"
-            if not lastVersion:
-              print ("No buid version detected for: ${{ env.BASE_VERSION }}")
-              print ("Will generate a new version starting at ${{ env.BASE_VERSION }}.0")
-              set_env("NEW_VERSION", "${{ env.BASE_VERSION }}.0")
-            else:
-              oldVersion= "${{ env.CURRENT_VERSION }}".split(".")
+              versionArr = version.split(".")
 
-              major = oldVersion[0]
-              minor = oldVersion[1]
-              build = oldVersion[2]
+              major = versionArr[0]
+              minor = versionArr[1]
+              build = versionArr[2]
 
               newVersion = f"{major}.{minor}.{int(build) + 1}"
 
+              print (f"version detected: {version}")
+              set_env("CURRENT_VERSION", version)
+
               print ("new version: {newVersion}")
-              set_env("NEW_VERSION", newVersion)    
+              set_env("NEW_VERSION", newVersion)  
 
       # Returns current version
       - id: currentVersion

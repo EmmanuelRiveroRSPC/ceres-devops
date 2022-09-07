@@ -1,5 +1,5 @@
 ---
-name: test
+name: PR Check
 
 on: 
   pull_request:

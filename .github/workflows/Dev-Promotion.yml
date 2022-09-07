@@ -6,7 +6,6 @@ env:
   HELM_CHART: ceres
   HELM_CHART_FOLDER: helm-ceres/cherts/ceres
   CLUSTER_NAME: primary-cluster
-  CACHE_KEY: mvn-${{ github.workflow }}
 
 on: 
   push:

@@ -11,10 +11,11 @@ jobs:
   seeit:
     runs-on:  ubuntu-latest
 
+    #Note: private key
     steps:
       - name: Checkout helm-repo
         uses: actions/checkout@v3
         with:
-          ssh-key: ${{ secrets.GIT_SSH }}
+          ssh-key: ${{ secrets.GIT_SSH_KEY }}
 
       - run: echo setup-java-${{ runner.os }}-${{ env.packageManager }}-${{ hashFiles('**/pom.xml') }}
