@@ -56,23 +56,13 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
 
-      - name: Set artifact name
-        shell: bash
-        run: |
-          echo "ARTIFACT_VERSION=${{ needs.Setup.outputs.new_version }}-SNAPSHOT" >> $GITHUB_ENV 
-
       ### Maven build
       - name: Build with Maven
         shell: bash
         run: |
-          mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_VERSION }} versions:commit
-          mvn -B -U -s .mvn/settings.xml  deploy jib:build -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }} 
-
-      # - name: Build with Maven
-      #   shell: bash
-      #   run: |
-      #     mvn build-helper:parse-version versions:set -DnewVersion=${{ env.ARTIFACT_VERSION }} versions:commit
-      #     mvn -B verify -s .mvn/settings.xml
+          ARTIFACT_VERSION=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
+          mvn build-helper:parse-version versions:set -DnewVersion=$ARTIFACT_VERSION versions:commit
+          mvn -B -U -s .mvn/settings.xml deploy jib:build -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }} 
 
   Deploy:
     runs-on: ubuntu-latest
