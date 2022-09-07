@@ -1,12 +1,6 @@
 ---
 name: Dev promotion
 
-env:
-  IMAGE_NAME: ceres-test
-  HELM_CHART: ceres
-  HELM_CHART_FOLDER: helm-ceres/cherts/ceres
-  CLUSTER_NAME: primary-cluster
-
 on: 
   push:
     branches: 
@@ -14,6 +8,13 @@ on:
     paths-ignore:
       - '.github/workflows/**'
       - 'test-script' 
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: ceres-test
+  HELM_CHART: ceres
+  HELM_CHART_FOLDER: helm-ceres/cherts/ceres
+  CLUSTER_NAME: primary-cluster
 
 jobs:
   Setup:
