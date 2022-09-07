@@ -7,7 +7,8 @@ on:
       - master
     paths-ignore:
       - '.github/workflows/**'
-      - 'test-script' 
+      - 'test-script'
+      - '**/pom.xml' 
   workflow_dispatch:
 
 env:
@@ -28,6 +29,7 @@ jobs:
   Build:
     needs: Setup
 
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:

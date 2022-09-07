@@ -55,7 +55,7 @@ jobs:
       - name: .m2 forder [*** fix it please ***]
         run: sed -i 's*/root/.m2/*~/.m2/*g' ./.mvn/settings.xml
 
-      #Promoting image & artifact
+      # Promoting image & artifact
       - name: 'Image promotion'
         run: gcloud container images add-tag gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:latest gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME:${{ needs.Setup.outputs.new_version }}
 
@@ -110,5 +110,5 @@ jobs:
 #      - name: Helm upgrade
 #        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.tag=${{ needs.Setup.outputs.new_version }}    
 
-      - name: Helm upgrade
-        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=gcr.io/${{ secrets.GCP_DEV_ACC }}/ceres-test,image.tag=${{ needs.Setup.outputs.new_version }}     
+#      - name: Helm upgrade
+#        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=gcr.io/${{ secrets.GCP_DEV_ACC }}/ceres-test,image.tag=${{ needs.Setup.outputs.new_version }}     
