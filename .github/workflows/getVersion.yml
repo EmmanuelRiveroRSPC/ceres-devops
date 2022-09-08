@@ -101,17 +101,13 @@ jobs:
               print ("new version: {newVersion}")
               set_env("NEW_VERSION", newVersion)  
 
-      # Returns current version
-      - id: currentVersion
+      - id: returnVersion
         shell: bash
         run: | 
           echo "::set-output name=currentVersion::${{ env.CURRENT_VERSION }}"
-
-      # Returns build + 1 version
-      - id: newVersion
-        shell: bash
-        run: | 
           echo "::set-output name=newVersion::${{ env.NEW_VERSION }}"
+
+          
 
 
       

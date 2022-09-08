@@ -93,14 +93,8 @@ jobs:
       
       ### deploying
       
-      - name: Getting latest digest
+      - name: Deploying
         shell: bash
         run: | 
           DIGEST=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
-          echo "DIGEST=$(echo $DIGEST)" >> $GITHUB_ENV
-
-      - name: test digest
-        run: echo ${{ env.DIGEST }} 
-    
-#      - name: Helm upgrade
-#        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=gcr.io/${{ secrets.GCP_DEV_ACC }}/${IMAGE_NAME}@sha256,image.tag=${{ env.DIGEST }}
+          helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=gcr.io/${{ secrets.GCP_DEV_ACC }}/${IMAGE_NAME}@sha256,image.tag=${{ DIGEST }}
