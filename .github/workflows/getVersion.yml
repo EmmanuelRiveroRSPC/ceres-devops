@@ -81,7 +81,7 @@ jobs:
               set_env("CURRENT_VERSION", "${{ env.BASE_VERSION }}.0")
               set_env("NEW_VERSION", "${{ env.BASE_VERSION }}.0")
             else:
-              version = "${{ env.LAST_VERSION }}".strip(",latest")
+              version = lastVersion.strip(",latest")
 
               if len(version.split(",")) > 1:
                 print('\033[1m' + "Two or more tags found using the same image, aborting...")
