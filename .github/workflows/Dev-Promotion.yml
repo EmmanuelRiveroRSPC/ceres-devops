@@ -18,14 +18,6 @@ env:
   CLUSTER_NAME: primary-cluster
 
 jobs:
-  Setup:
-    uses: ./.github/workflows/getVersion.yml
-    with:
-      image: ceres-test
-    secrets:
-      account:  ${{ secrets.GCP_DEV_ACC }}
-      GCPCreds: ${{ secrets.GCP_SA_JSON }} 
-
   Build:
     needs: Setup
 
