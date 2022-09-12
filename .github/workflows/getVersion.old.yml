@@ -1,5 +1,5 @@
 ---
-name: getVersion
+name: getVersion old
 
 on:
   workflow_call:

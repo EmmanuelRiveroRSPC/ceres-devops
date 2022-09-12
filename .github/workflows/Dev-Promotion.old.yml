@@ -1,18 +1,18 @@
 ---
-name: Dev promotion
+name: Dev promotion Old
 
 on: 
-  push:
-    branches: 
-      - master
-    paths-ignore:
-      - '.github/workflows/**'
-      - 'test-script'
-      - '**/pom.xml' 
+#  push:
+#    branches: 
+#      - master
+#    paths-ignore:
+#      - '.github/workflows/**'
+#      - 'test-script'
+#      - '**/pom.xml' 
   workflow_dispatch:
 
 env:
-  IMAGE_BASE_NAME: ceres-test
+  IMAGE_NAME: ceres-test
   HELM_CHART: ceres
   HELM_CHART_FOLDER: helm-ceres/cherts/ceres
   CLUSTER_NAME: primary-cluster
@@ -55,21 +55,13 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
 
-      - name: Set version
-        shell: bash
-        run: | 
-          POM_VERSION = $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          RUN_ID = ${{ github.run_id }}
-          COMMIT_SHA = ${{ github.sha }}
-          echo "VERSION=${POM_VERSION}-${RUN_ID}-${COMMIT_SHA}" >> $GITHUB_ENV
-          echo "IMAGE_NAME=gcr.io/${{ secrets.GCP_DEV_ACC }}/${{ env.IMAGE_BASE_NAME }}:${{ env.VERSION }}" >> $GITHUB_ENV
-
       ### Maven build
       - name: Build with Maven
         shell: bash
         run: |
-          mvn build-helper:parse-version versions:set -DnewVersion=${{ env.VERSION }} versions:commit
-          mvn -B -U -s .mvn/settings.xml deploy jib:build -Dimage=$ {{ env.IMAGE_NAME }}
+          ARTIFACT_VERSION=${{ needs.Setup.outputs.new_version }}-SNAPSHOT
+          mvn build-helper:parse-version versions:set -DnewVersion=$ARTIFACT_VERSION versions:commit
+          mvn -B -U -s .mvn/settings.xml deploy jib:build -Ddocker.image.prefix=gcr.io/${{ secrets.GCP_DEV_ACC }} 
 
   Deploy:
     runs-on: ubuntu-latest
@@ -77,6 +69,15 @@ jobs:
 
     steps:
       ### Seting up runner env ###
+      - uses: actions/checkout@v3
+      
+      - uses: ./.github/actions/GCPSetup
+        with:
+          GCPCreds: ${{ secrets.GCP_SA_JSON }} 
+          k8sSetup: "TRUE"
+          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
+          clusterName: $CLUSTER_NAME
+
       - name: Checkout helm-repo
         uses: actions/checkout@v3
         with:
@@ -89,22 +90,17 @@ jobs:
         with:
           version: 3.9.0
         id: install
-
-      - uses: ./.github/actions/GCPSetup
-        with:
-          GCPCreds: ${{ secrets.GCP_SA_JSON }} 
-          k8sSetup: "TRUE"
-          GCPaccount: ${{ secrets.GCP_DEV_ACC }}
-          clusterName: $CLUSTER_NAME
-   
+      
       ### deploying
       
       - name: Deploying
         shell: bash
         run: | 
-          ls  
-          echo {{ env.IMAGE_NAME }}
-          helm list
+          DIGEST=$(gcloud container images list-tags gcr.io/${{ secrets.GCP_DEV_ACC }}/$IMAGE_NAME --filter TAGS=latest --format=json | jq .[0]."digest" | tr -d "\"" | awk -F ":" '{print $2}')
+          echo "DIGEST=$(echo $DIGEST)" >> $GITHUB_ENV
 
+      - name: test digest
+        run: echo ${{ env.DIGEST }} 
+    
 #      - name: Helm upgrade
-#        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository={{ env.IMAGE_NAME }}
+#        run: helm upgrade $HELM_CHART $HELM_CHART_FOLDER --set image.repository=gcr.io/${{ secrets.GCP_DEV_ACC }}/${IMAGE_NAME}@sha256,image.tag=${{ env.DIGEST }}
