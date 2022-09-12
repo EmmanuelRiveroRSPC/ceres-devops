@@ -51,7 +51,8 @@ jobs:
           POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           RUN_ID=${{ github.run_id }}
           COMMIT_SHA=${{ github.sha }}
-          VERSION=${POM_VERSION}-${RUN_ID}-${COMMIT_SHA}"
+          VERSION=${POM_VERSION}-${RUN_ID}-${COMMIT_SHA}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "IMAGE_NAME=gcr.io/${{ secrets.GCP_DEV_ACC }}/${{ env.IMAGE_BASE_NAME }}:${VERSION}" >> $GITHUB_ENV
 
       ### Maven build
