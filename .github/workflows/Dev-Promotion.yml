@@ -45,22 +45,18 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
 
-      - name: Set version
+      - name: Mavel build
         shell: bash
         run: | 
           POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           RUN_ID=${{ github.run_number }}
           COMMIT_SHA=${{ github.sha }}
           VERSION=${POM_VERSION}-${RUN_ID}-${COMMIT_SHA}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "IMAGE_NAME=gcr.io/${{ secrets.GCP_DEV_ACC }}/${{ env.IMAGE_BASE_NAME }}:${VERSION}" >> $GITHUB_ENV
+          IMAGE_NAME=gcr.io/${{ secrets.GCP_DEV_ACC }}/${{ env.IMAGE_BASE_NAME }}:${VERSION}
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
 
-      ### Maven build
-      - name: Build with Maven
-        shell: bash
-        run: |
-          mvn build-helper:parse-version versions:set -DnewVersion=${{ env.VERSION }} versions:commit
-          mvn -B -U -s .mvn/settings.xml deploy jib:build -Dimage=${{ env.IMAGE_NAME }}
+          mvn build-helper:parse-version versions:set -DnewVersion=${VERSION} versions:commit
+          mvn -B -U -s .mvn/settings.xml deploy jib:build -Dimage=${IMAGE_NAME}
 
   Deploy:
     runs-on: ubuntu-latest
