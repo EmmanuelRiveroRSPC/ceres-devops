@@ -59,7 +59,7 @@ jobs:
         shell: bash
         run: |
           mvn build-helper:parse-version versions:set -DnewVersion=${{ env.VERSION }} versions:commit
-          mvn -B -U -s .mvn/settings.xml deploy jib:build -Dimage=$ {{ env.IMAGE_NAME }}
+          mvn -B -U -s .mvn/settings.xml deploy jib:build -Dimage=${{ env.IMAGE_NAME }}
 
   Deploy:
     runs-on: ubuntu-latest
