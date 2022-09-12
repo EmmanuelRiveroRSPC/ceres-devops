@@ -68,6 +68,8 @@ jobs:
 
     steps:
       ### Seting up runner env ###
+      - uses: actions/checkout@v3
+
       - name: Checkout helm-repo
         uses: actions/checkout@v3
         with:
