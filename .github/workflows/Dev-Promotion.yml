@@ -92,7 +92,7 @@ jobs:
         shell: bash
         run: | 
           ls  
-          echo {{ env.IMAGE_NAME }}
+          echo ${{ env.IMAGE_NAME }}
           helm list
 
 #      - name: Helm upgrade
