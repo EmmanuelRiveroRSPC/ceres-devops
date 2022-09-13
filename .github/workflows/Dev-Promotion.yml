@@ -100,7 +100,7 @@ jobs:
       - name: Deploying
         shell: bash
         run: | 
-          echo ${{ needs.Build.outputs.version }}
+          echo gcr.io/${{ secrets.GCP_DEV_ACC }}/${{ env.IMAGE_BASE_NAME }}:${{ needs.Build.outputs.version }}
           helm list
 
 #      - name: Helm upgrade
