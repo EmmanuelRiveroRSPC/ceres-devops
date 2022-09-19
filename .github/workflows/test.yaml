@@ -22,40 +22,5 @@ jobs:
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
       - run: |
-          python -m pip install --upgrade pip
-          pip install requests
-
-      - uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            import os
-            import subprocess 
-            import requests
-
-            d = os.environ.copy
-            f = dict(os.environ)
-
-            print(d)
-            print(f)
-
-            user=f["user-test"] 
-            password=f["password-test"]
-
-            encoded = user.encode()
-            encoded2 = user.encode(encoding='utf-8')
-
-
-            print(user)
-            print(encoded)
-            print(encoded2)
-
-            for i in user:
-              print (i)
-
-            r = requests.get("http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers", auth=(user, password)) 
-            print(r.status_code)
-            print(r.json())
-      
-      - run: curl -u ${{ secrets.USER_TEST }}:${{ secrets.PASSWORD_TEST }} -X GET http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers
-
-      - run: curl -u ${{ env.user-test }}:${{ env.password-test }} -X GET http://salus-artifactory.dev.monplat.rackspace.net/artifactory/api/security/lockedUsers
+          echo {{ github.run_number }}
+          echo {{ github.run_attempt }}
