@@ -22,5 +22,5 @@ jobs:
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
       - run: |
-          echo {{ github.run_number }}
-          echo {{ github.run_attempt }}
+          echo ${{ github.run_number }}
+          echo ${{ github.run_attempt }}
