@@ -52,8 +52,9 @@ jobs:
         shell: bash
         run: |
           POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          POM_VERSION="${POM_VERSION%-SNAPSHOT}"
           RUN_ID=${{ github.run_number }}
-          COMMIT_SHA=${{ github.sha }}
+          COMMIT_SHA=${{ github.sha }}.${{run_attempt}}
           VERSION=${POM_VERSION}-${RUN_ID}-${COMMIT_SHA}
           IMAGE_NAME=${{ env.REGISTRY }}/${{ secrets.GCP_DEV_ACC }}/${{ env.IMAGE_BASE_NAME }}:${VERSION}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
